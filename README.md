@@ -16,3 +16,5 @@ external toolkit.
 These tools are provided without warranty and for personal/district use only. They are not intended for commercial profit. 
 
 To be clear - if someone authorized from Toastmasters International writes us to ask to have these tools shut down, we will cheerfully do so.
+
+These tools are provided under the GPLv3. If you're unclear what that means see https://tldrlegal.com/license/gnu-general-public-license-v3-(gpl-3) .
