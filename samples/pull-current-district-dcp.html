@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+	<head>
+    	<meta charset="utf-8">
+    	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    	<title>samples/pull-current-district-dcp.html</title>
+	</head>
+<body>
+	<h1>samples/pull-current-district-dcp.html</h1>
+	
+	<div id="htmlblock"></div>
+	
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+	
+	<script>
+		$( document ).ready(function() {
+			var district = '96';
+			var report_html_url = 'http://dashboards.toastmasters.org/Club.aspx?id=' + district;
+	
+			var xmlHttp = new XMLHttpRequest();
+    		xmlHttp.open( "GET", report_html_url, false );
+    		xmlHttp.send( null );
+    		$("#htmlblock").html( xmlHttp.responseText );	
+
+		});
+
+	</script>
+	
+</body>
+</html>
