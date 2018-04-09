@@ -16,11 +16,16 @@
 		$( document ).ready(function() {
 			var district = '96';
 			var report_html_url = 'http://dashboards.toastmasters.org/Club.aspx?id=' + district;
+			var cors_proxy = 'https://crossorigin.me/' + report_html_url;
 	
-			var xmlHttp = new XMLHttpRequest();
-    		xmlHttp.open( "GET", report_html_url, false );
-    		xmlHttp.send( null );
-    		$("#htmlblock").html( xmlHttp.responseText );	
+			$.ajax({
+			  url: cors_proxy,
+			  method: "GET",
+			  dataType: "html",
+			  success: function(res) {
+			   console.log(res);
+			  }
+			});
 
 		});
 
