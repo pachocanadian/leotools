@@ -3,7 +3,7 @@ Client-side data tools for working with online public speaking information
 
 ## Roadmap
 
-See [ROADMAP.md](ROADMAP.md)
+See [https://github.com/pachocanadian/leotools/wiki/Roadmap](https://github.com/pachocanadian/leotools/wiki/Roadmap)
 
 ## Description
 In a nutshell, we provide a collection of Javascript tools which allow technically motivated members of Toastmasters to examine statistics, 
