@@ -15,6 +15,8 @@
 	
 	$csv = array_map("str_getcsv", $csv_lines);
 	$json = json_encode($csv);
+	
+	header('Access-Control-Allow-Origin: *');	
 	print($json);
 
 	// close cURL resource, and free up system resources
