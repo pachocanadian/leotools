@@ -27,12 +27,16 @@
 			  dataType: "html",
 			  success: function(res) {
 			  	jsonArray = jQuery.parseJSON(res);
+			  	columns = jsonArray[0];
+			  	coldefs = [];
+			  	for(i=0; i<columns.length; i++)
+			  	{
+			  		coldefs.push({ title: columns[i]});
+			  	}
 			  	
 			  	$("#htmlblock").DataTable({
-			  		"data": [
-			  			{ "foo": "bar" }
-			  		],
-			  		"order": [[1,"asc"]]			  	
+			  		"data": jsonArray,			  		
+			  		"columns": coldefs			  					  	
 			  	});
 			  	
 			  }
