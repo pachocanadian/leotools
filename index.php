@@ -16,18 +16,13 @@
 </head>
 
 <body>
-  <div>
-    <header>
-      <h1>leotools</h1>
-    </header>
-    <nav>
-      <p><a href="/">Home</a></p>
-      <p><a href="https://github.com/pachocanadian/leotools/">github</a></p>
-    </nav>
 
-    <div>
-		<a href="samples/pull-current-district-dcp.html">samples/pull-current-district-dcp.html</a>      
-    </div>
+      <h1>leotools</h1>
+      <p>See <a href="https://github.com/pachocanadian/leotools/">github</a> for fluffy things</p>
+
+    <ul>
+		<li><a href="samples/pull-current-district-dcp.html">samples/pull-current-district-dcp.html</a></li>      
+    </ul>
 
   </div>
 </body>
