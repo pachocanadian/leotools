@@ -1,0 +1,3 @@
+[submodule "cors/ext/phpfastcache"]
+	path = cors/ext/phpfastcache
+	url = https://github.com/PHPSocialNetwork/phpfastcache
