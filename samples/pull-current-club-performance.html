@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+	<head>
+    	<meta charset="utf-8">
+    	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    	<title>samples/pull-current-club-performance.html</title>
+    	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+	</head>
+<body>
+	<h1>samples/pull-current-club-performance.html</h1>
+	<h3>Showing district=<span id="district_text"></span></h3>
+	<h3>Asof date=<span id="asof_text"></span></h3>
+	<p>This is demonstrating a live pull of toastmasters.org data via JSONP via an online proxy</p>	
+	
+	<table id="htmlblock" class="display" style="width:100%"></table>
+	
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+	
+	<script>
+		$( document ).ready(function() {
+			today = new Date();
+			$('span#asof_text').text(today.toDateString());
+			
+			endOfMonth = new Date(today.getFullYear(), today.getMonth()+1, 0);
+			date_string = (endOfMonth.getMonth()+1) + '/' + endOfMonth.getDate() + '/' + endOfMonth.getFullYear();			
+			
+			var district = '96';
+			$('span#district_text').text(district);
+			// 'http://dashboards.toastmasters.org/Club.aspx?id=' + district;
+			var report_html_url = 'http://dashboards.toastmasters.org/export.aspx?type=CSV&report=clubperformance~' + district + '~' + date_string + '~~2017-2018'; 
+			
+			// WAS: 'http://code.pachogrande.com/cors/sample.csv';			
+			var cors_proxy = 'http://code.pachogrande.com/leotools/cors/proxy.php/' + report_html_url;
+			
+			console.log("Fetching " + cors_proxy + " via AJAX");
+	
+			$.ajax({
+			  url: cors_proxy,
+			  method: "GET",
+			  dataType: "html",
+			  success: function(res) {
+			  	console.log("Successful pull via AJAX");
+			  	
+			  	jsonArray = jQuery.parseJSON(res);
+			  	
+			  	columns = jsonArray[0];
+			  	coldefs = [];
+			  	for(i=0; i<columns.length; i++)
+			  	{
+			  		coldefs.push({ title: columns[i]});
+			  	}
+			  	
+			  	// Shift the header row from the data
+				jsonArray.shift();
+				
+				// The last two rows indicate when the information was pulled, pop them out of the way before rendering
+				jsonArray.pop();
+			  	jsonArray.pop();
+			  				  	
+
+			  	
+			  	$("#htmlblock").DataTable({
+			  		"data": jsonArray,			  		
+			  		"columns": coldefs			  					  	
+			  	});
+			  	
+			  }
+			});
+			
+			
+
+		});
+
+	</script>
+	
+</body>
+</html>
