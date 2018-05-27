@@ -3,11 +3,11 @@
 	<head>
     	<meta charset="utf-8">
     	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    	<title>samples/pull-current-district-membership.html</title>
+    	<title>samples/pull-current-division-performance.html</title>
     	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
 	</head>
 <body>
-	<h1>samples/pull-current-district-membership.html</h1>
+	<h1>samples/pull-current-division-performance.html</h1>
 	<h3>Showing district=<span id="district_text"></span></h3>
 	<h3>Asof date=<span id="asof_text"></span></h3>
 	<p>This is demonstrating a live pull of toastmasters.org data via JSONP via an online proxy</p>	
@@ -27,8 +27,8 @@
 			
 			var district = '96';
 			$('span#district_text').text(district);
-			// 'http://dashboards.toastmasters.org/Club.aspx?id=' + district;
-			var report_html_url = 'http://dashboards.toastmasters.org/export.aspx?type=CSV&report=districtperformance~' + district + '~' + date_string + '~~2017-2018'; 
+
+			var report_html_url = 'http://dashboards.toastmasters.org/export.aspx?type=CSV&report=divisionperformance~' + district + '~' + date_string + '~~2017-2018'; 
 			
 			// WAS: 'http://code.pachogrande.com/cors/sample.csv';			
 			var cors_proxy = 'http://code.pachogrande.com/leotools/cors/proxy.php/' + report_html_url;
