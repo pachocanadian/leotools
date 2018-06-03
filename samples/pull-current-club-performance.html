@@ -4,22 +4,26 @@
     	<meta charset="utf-8">
     	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     	<title>samples/pull-current-club-performance.html</title>
+    	<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
 	</head>
 <body>
 	<h1>samples/pull-current-club-performance.html</h1>
 	<h3>Showing district=<span id="district_text"></span></h3>
+	<select id="district_select"></select>
+	
 	<h3>Asof date=<span id="asof_text"></span></h3>
 	<p>This is demonstrating a live pull of toastmasters.org data via JSONP via an online proxy</p>	
 	
 	<table id="htmlblock" class="display" style="width:100%"></table>
 	
 	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 	<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 	<script src="../js/leotools-common.js"></script>
 	
 	<script>
-		$( document ).ready(function() {
+		$( document ).ready(function() {									
 			today = new Date();
 			$('span#asof_text').text(today.toDateString());
 			
@@ -27,8 +31,48 @@
 			$('span#district_text').text(district);
 			
 			var LT = new Leotools({'district': district});
-			proxy_url = LT.cors_proxy + LT.current_club_performance_url();
-	
+
+			proxy_url = LT.cors_proxy + LT.current_district_summary_url();
+			$.ajax({
+			  url: proxy_url,
+			  method: "GET",
+			  dataType: "html",
+			  success: function(res) 
+				{			  	
+				  	jsonArray = jQuery.parseJSON(res);
+				  	jsonArray.shift();
+					jsonArray.pop();
+				  	jsonArray.pop();
+				  	
+				  	district_list = [];
+				  	for(i=0; i<jsonArray.length; i++)
+				  	{
+				  		district_list.push( jsonArray[i][1]);
+				  	}
+					district_list.sort();
+					
+					for(i=0; i<district_list.length; i++)
+					{
+						$('#district_select').append('<option value="' + district_list[i] + '">District ' + district_list[i] + '</option>');
+					}					
+					$('#district_select option[value=' + district + ']').attr('selected', 'selected');
+										
+					$('#district_select').selectmenu({
+						close: function(event,ui) {
+							var district = this.value;
+							LT.district = this.value;
+							$('span#district_text').text(district);
+							load_datatable();
+						}
+						
+					});
+					
+				}
+			});
+
+			function load_datatable() {
+
+			proxy_url = LT.cors_proxy + LT.current_club_performance_url();			
 			$.ajax({
 			  url: proxy_url,
 			  method: "GET",
@@ -56,13 +100,17 @@
 			  	
 			  	$("#htmlblock").DataTable({
 			  		"data": jsonArray,			  		
-			  		"columns": coldefs			  					  	
+			  		"columns": coldefs,
+			  		"destroy": true			  					  	
 			  	});
 			  	
 			  }
 			});
 			
+			}
+			load_datatable();
 			
+									
 
 		});
 
