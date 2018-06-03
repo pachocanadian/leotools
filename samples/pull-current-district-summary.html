@@ -22,9 +22,8 @@
 			today = new Date();
 			$('span#asof_text').text(today.toDateString());
 			
-			var report_html_url = lt_current_district_summary_url(); 
-			
-			var cors_proxy = 'http://code.pachogrande.com/leotools/cors/proxy.php/' + report_html_url;
+			var LT = new Leotools();			
+			var cors_proxy = LT.cors_proxy + LT.current_district_summary_url();
 			
 			console.log("Fetching " + cors_proxy + " via AJAX");
 	

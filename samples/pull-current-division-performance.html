@@ -26,10 +26,8 @@
 			var district = '96';
 			$('span#district_text').text(district);
 
-			var report_html_url = lt_current_division_performance_url(district); 
-			
-			// WAS: 'http://code.pachogrande.com/cors/sample.csv';			
-			var cors_proxy = 'http://code.pachogrande.com/leotools/cors/proxy.php/' + report_html_url;
+			var LT = new Leotools({ 'district': district });
+			var cors_proxy = LT.cors_proxy + LT.current_division_performance_url();
 			
 			console.log("Fetching " + cors_proxy + " via AJAX");
 	
