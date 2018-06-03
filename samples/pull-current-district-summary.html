@@ -3,12 +3,11 @@
 	<head>
     	<meta charset="utf-8">
     	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    	<title>samples/pull-current-district-membership.html</title>
+    	<title>samples/pull-current-district-summary.html</title>
     	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
 	</head>
 <body>
-	<h1>samples/pull-current-district-membership.html</h1>
-	<h3>Showing district=<span id="district_text"></span></h3>
+	<h1>samples/pull-current-district-summary.html</h1>
 	<h3>Asof date=<span id="asof_text"></span></h3>
 	<p>This is demonstrating a live pull of toastmasters.org data via JSONP via an online proxy</p>	
 	
@@ -23,11 +22,8 @@
 			today = new Date();
 			$('span#asof_text').text(today.toDateString());
 			
-			var district = '96';
-			$('span#district_text').text(district);
-
-			var LT = new Leotools({'district': district});
-			proxy_url = LT.cors_proxy + LT.current_district_performance_url();
+			var LT = new Leotools();			
+			proxy_url = LT.cors_proxy + LT.current_district_summary_url();
 	
 			$.ajax({
 			  url: proxy_url,
