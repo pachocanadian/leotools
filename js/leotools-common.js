@@ -16,8 +16,7 @@ function Leotools(args)
 			
 			var report_csv_url = 'http://dashboards.toastmasters.org/export.aspx?type=CSV&report=clubperformance~' + this.district + '~' + date_string + '~~' + this.tm_year;	
 			return report_csv_url;			
-		}
-	;
+		};
 	
 	this.current_district_performance_url = function()
 		{
@@ -28,8 +27,7 @@ function Leotools(args)
 			
 			var report_csv_url = 'http://dashboards.toastmasters.org/export.aspx?type=CSV&report=districtperformance~' + this.district + '~' + date_string + '~~' + this.tm_year;	
 			return report_csv_url;			
-		}
-	;
+		};
 	
 	this.current_division_performance_url = function()
 		{
@@ -40,8 +38,7 @@ function Leotools(args)
 			
 			var report_csv_url = 'http://dashboards.toastmasters.org/export.aspx?type=CSV&report=divisionperformance~' + this.district + '~' + date_string + '~~' + this.tm_year;	
 			return report_csv_url;			
-		}
-	;	
+		};	
 
 	this.current_district_summary_url = function()
 		{
@@ -52,9 +49,6 @@ function Leotools(args)
 					
 		var report_csv_url = 'http://dashboards.toastmasters.org/export.aspx?type=CSV&report=districtsummary~' + date_string + '~~' + this.tm_year;	
 		return report_csv_url;
-		}
-	;
-	
-	
-		
+		};
+			
 }
