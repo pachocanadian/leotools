@@ -1,0 +1,998 @@
+<!doctype html>
+<html lang="en">
+<head>	
+	
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/cupertino/jquery-ui.css">
+	
+	<style type="text/css">
+		.club {
+			overflow: hidden;
+			position: relative;
+			border: solid black 1px;
+			height: 200px;
+		}
+
+		#asofslidertext {
+		}
+
+		#districtslidertext {
+		}
+
+		html {
+			overflow-y: scroll;
+			-webkit-font-smoothing: antialiased;
+			-webkit-text-shadow: rgba(0,0,0,.01) 0 0 1px;
+			/*text-shadow: rgba(0,0,0,.01) 0 0 1px;*/
+		}
+
+		.club .coaching_eligible {
+			position: absolute;
+			top: 2%;
+			right: 2%;
+			text-align: right;
+			background: rgba(255,000,000,1);
+			color: white;
+			line-height: 90%;
+			padding: 2px;
+		}
+
+		.club .coaching_current {
+			position: absolute;
+			top: 2%;
+			right: 2%;
+			text-align: right;
+			background: rgba(127,255,000,1);
+			line-height: 90%;
+			padding: 2px;
+		}
+
+		.club .clubname {
+			position: absolute;
+			bottom: 2%;
+			left: 2%;
+			right: 2%;
+			text-align: center;
+			line-height: 90%;
+		}
+
+		.club .goals_met {
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			text-align: center;
+			font-size: 500%;
+			-webkit-text-stroke: 1px black;
+			color: white;
+			text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+		}
+
+		.club .membership_needed {
+			position: absolute;
+			top: 50%;
+			left: 0;
+			right: 0;
+			text-shadow: 1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+			text-align: center;
+			font-size: 300%;
+		}
+
+		div.bycoach {
+			position: relative;
+			border: solid black 2px;
+		}
+
+		div.bycoach span.pos {
+			position: absolute;
+			top: 1%;
+			right: 1%;
+			font-size: 200%;
+		}
+
+		div.bydcp {
+			position: relative;
+			border: solid black 2px;
+		}
+
+		div.bydcp span.pos {
+			position: absolute;
+			top: 1%;
+			right: 1%;
+			font-size: 200%;
+		}
+
+		div.byarea {
+			position: relative;
+			border: solid black 2px;
+		}
+
+		div.byarea span.pos {
+			position: absolute;
+			bottom: 1%;
+			right: 1%;
+			font-size: 200%;
+		}
+
+		div.byarea span.pos span {
+			display: block;
+			text-align: right;
+		}
+
+		.ui-tooltip {
+			max-width: 90%;
+			width: 500px;
+		}
+		.ui-tooltip th {
+			white-space: nowrap;
+			padding-right: 20px;
+		}
+
+		.ui-menu {
+			position: absolute;
+			width: 100px;
+		}
+
+		.modal {
+			display: none;
+			position: fixed;
+			z-index: 1000;
+			top: 0;
+			left: 0;
+			height: 100%;
+			width: 100%;
+			background: rgba( 0, 0, 0, .4 )url('http://code.pachogrande.com/img/FhHRx.gif')50% 50%no-repeat;
+		}
+
+		/* When the body has the loading class, we turn
+		 the scrollbar off with overflow:hidden */
+		body.loading {
+			overflow: hidden;
+		}
+
+		/* Anytime the body has the loading class, our
+		 modal element will be visible */
+		body.loading .modal {
+			display: block;
+		}
+
+		.progress {
+			height: 42px;
+			border: solid black 1px;
+		}
+		.progress-bar {
+			color: black;
+			text-align: center;
+		}
+	</style>
+	
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
+	<script src="http://code.pachogrande.com/jqueryui-bootstrap-bridge.js"></script>
+	
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+		
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<title>LEO Board for District 96 - latest</title>
+	
+</head>
+<body data-district="96" data-asof="latest">
+
+<nav class="navbar-inverse">
+	<div class="container-fluid">
+		<!--<div class="navbar-header">-->
+			<ul class="nav navbar-nav">
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="SortDisplay">Sort <span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li class="dropdown-header">
+							Ascending Order
+						</li>
+						<li>
+							<a href="javascript:change_sort('clubnumber', 1)">By Club Number</a>
+						</li>
+						<li>
+							<a href="javascript:change_sort('membership', 1)">By Current Membership</a>
+						</li>
+						<li>
+							<a href="javascript:change_sort('dcpmembership', 1)">By Required Membership For DCP</a>
+						</li>
+						<li>
+							<a href="javascript:change_sort('dcpgoals', 1)">By Current DCP</a>
+						</li>
+						<li role="separator" class="divider"></li>
+						<li class="dropdown-header">
+							Descending Order
+						</li>
+						<li>
+							<a href="javascript:change_sort('clubnumber', -1)">By Club Number</a>
+						</li>
+						<li>
+							<a href="javascript:change_sort('membership', -1)">By Current Membership</a>
+						</li>
+						<li>
+							<a href="javascript:change_sort('dcpmembership', -1)">By Required Membership For DCP</a>
+						</li>
+						<li>
+							<a href="javascript:change_sort('dcpgoals', -1)">By Current DCP</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+			<ul class="nav navbar-nav">
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="GroupDisplay">Group <span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li>
+							<a href="javascript:change_group('none')">No grouping (default)</a>
+						</li>
+						<li>
+							<a href="javascript:change_group('area')">By Area</a>
+						</li>
+						<li>
+							<a href="javascript:change_group('dcp')">By DCP</a>
+						</li>
+						<li>
+							<a href="javascript:change_group('coach')">By Coaching Status</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+			
+			<div class="nav navbar-nav navbar-right">
+				<button id="helpvideo" type="button" class="btn btn-default navbar-btn" aria-label="Help Video">
+	  				<span class="glyphicon glyphicon-film" aria-hidden="true"></span>
+				</button>
+			</div>
+		<!--</div>-->
+	</div>
+</nav>
+
+<div class="container-fluid">		
+	<div class="row districtrow">
+		<div class="col-xs-3 col-md-1 text-right">District:</div>
+		<div class="col-xs-9 col-md-11"><input type="range" id="districtslider" list="districtnumbers" /></div>	
+		<div id="districtslidertext" class="col-xs-12 text-center">District 96</div>
+	</div>
+
+	<div class="row">
+		<div class="col-xs-3 col-md-1 text-right">When:</div>
+		<div class="col-xs-9 col-md-11"><input type="range" id="asofslider" list="asofnumbers" />
+
+		</div>
+		<div id="asofslidertext" class="col-xs-12 text-center">latest</div>
+	</div>
+	
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="progress" id="goalsbar"><div class="progress-bar" id="goalsbar_10"></div><div class="progress-bar" id="goalsbar_9"></div><div class="progress-bar" id="goalsbar_8"></div><div class="progress-bar" id="goalsbar_7"></div><div class="progress-bar" id="goalsbar_6"></div><div class="progress-bar" id="goalsbar_5"></div><div class="progress-bar" id="goalsbar_4"></div><div class="progress-bar" id="goalsbar_3"></div><div class="progress-bar" id="goalsbar_2"></div><div class="progress-bar" id="goalsbar_1"></div><div class="progress-bar" id="goalsbar_0"></div></div>
+		</div>
+	</div>  
+		
+</div>	
+
+<div id=contentarea class="container-fluid">
+
+</div>
+
+<script>
+	$(document).on({
+		ajaxStart: function() { $("body").addClass("loading");    },
+		ajaxStop: function() { $("body").removeClass("loading"); }
+		});
+
+		function changeto(district,daterange)
+		{
+		var xhr;
+
+		console.log('changeto(district=' + district + ',daterange=' + daterange + ')');
+
+		url = "/json/clubsummary/" + daterange + "/" + district;
+		console.log('pulling JSON=http://code.pachogrande.com' + url);
+
+		xhr = $.getJSON( url , function( data ) {
+		console.log('starting JSON pull');
+		$("div#contentarea div").remove();
+
+		console.log('data has ' + data.length + ' items in it');
+		if(data.length == 0)
+		{
+		console.log('changing asof=latest and refreshing...');
+		window.asof = 'latest';
+		xhr.abort();
+		changeto(window.district, window.asof);
+
+		}
+
+		$.each( data, function( key, val ) {
+
+		jq = $( "<div class='col-xs-3 col-sm-3 col-md-2 col-lg-1 club' id='club_" + val.clubnumber + "'>" +
+			"<span class=clubname>" 	+ val.clubname 		+ "</span>" +
+			"<span class=goals_met>" 	+ val.goals_met 	+ "</span>" +
+			"<span class=membership_needed>" 	+ ( val.membership_needed > 0 ? '+' : '' ) + val.membership_needed 	+ "</span>" +
+			( val.coaching_eligible >= 1 ? '<span class=coaching_eligible>Coach?</span>' : '' ) +
+			( val.num_coaches >= 1 ? '<span class=coaching_current>Coach!</span>' : '' ) +
+			"</div>" );
+
+		$.each( val, function( ekey, eval) {
+		jq.attr('data-' + ekey, eval);
+		});
+
+		$("div#contentarea").append(jq);
+
+		console.log('...added club ');
+
+		});
+		console.log('complete JSON pull');
+
+		})
+		.done(function() {
+		console.log('JSON pull complete, firing done()');
+		//$(window).resize();
+
+		window.clubinfo = Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+
+		$("div.club").each(function(index){
+		gm = $(this).attr('data-goals_met');
+
+		if(gm ==  0)  { $(this).css('background-color', 'rgba(100,100,100,0.4)'); window.clubinfo[0]++; }
+		if(gm ==  1)  { $(this).css('background-color', 'rgba(255,000,000,0.4)'); window.clubinfo[1]++; }
+		if(gm ==  2)  { $(this).css('background-color', 'rgba(255, 64,000,0.4)'); window.clubinfo[2]++; }
+		if(gm ==  3)  { $(this).css('background-color', 'rgba(255,127,000,0.4)'); window.clubinfo[3]++; }
+		if(gm ==  4)  { $(this).css('background-color', 'rgba(255,255,000,0.4)'); window.clubinfo[4]++; }
+		if(gm ==  5)  { $(this).css('background-color', 'rgba(127,255,000,0.4)'); window.clubinfo[5]++; }
+		if(gm ==  6)  { $(this).css('background-color', 'rgba(000,255,000,0.4)'); window.clubinfo[6]++; }
+		if(gm ==  7)  { $(this).css('background-color', 'rgba(000,255,255,0.4)'); window.clubinfo[7]++; }
+		if(gm ==  8)  { $(this).css('background-color', 'rgba(000,127,255,0.4)'); window.clubinfo[8]++; }
+		if(gm ==  9)  { $(this).css('background-color', 'rgba(000,000,255,0.4)'); window.clubinfo[9]++; }
+		if(gm == 10)  { $(this).css('background-color', 'rgba(127,000,255,0.4)'); window.clubinfo[10]++; }
+
+		mn = $(this).attr('data-membership_needed');
+
+		if(mn < -4) {
+		$(this).find('span.membership_needed').css('color', 'rgba(255,000,000,1)');
+		} else if(mn < 0) {
+		$(this).find('span.membership_needed').css('color', 'rgba(255,255,000,1)');
+		} else if(mn >= 0) {
+		$(this).find('span.membership_needed').css('color', 'rgba(000,255,000,1)');
+		} else {
+		$(this).find('span.membership_needed').css('color', 'rgb(255,255,255,1)');
+		}
+		});
+
+		subtotal = 0;
+		for(i=0; i<=10; i++)
+		{
+		subtotal += window.clubinfo[i];
+		}
+
+		$("#goalsbar_0").css('background-color', 'rgba(100,100,100,0.4)').attr('data-goals_met', 0);
+		$("#goalsbar_1").css('background-color', 'rgba(255,000,000,0.4)').attr('data-goals_met', 1);
+		$("#goalsbar_2").css('background-color', 'rgba(255, 64,000,0.4)').attr('data-goals_met', 2);
+		$("#goalsbar_3").css('background-color', 'rgba(255,127,000,0.4)').attr('data-goals_met', 3);
+		$("#goalsbar_4").css('background-color', 'rgba(255,255,000,0.4)').attr('data-goals_met', 4);
+		$("#goalsbar_5").css('background-color', 'rgba(127,255,000,0.4)').attr('data-goals_met', 5);
+		$("#goalsbar_6").css('background-color', 'rgba(000,255,000,0.4)').attr('data-goals_met', 6);
+		$("#goalsbar_7").css('background-color', 'rgba(000,255,255,0.4)').attr('data-goals_met', 7);
+		$("#goalsbar_8").css('background-color', 'rgba(000,127,255,0.4)').attr('data-goals_met', 8);
+		$("#goalsbar_9").css('background-color', 'rgba(000,000,255,0.4)').attr('data-goals_met', 9);
+		$("#goalsbar_10").css('background-color', 'rgba(127,000,255,0.4)').attr('data-goals_met', 10);
+
+		rt=0;
+		for(i=0; i<=10; i++)
+		{
+		pc = window.clubinfo[i] / subtotal * 100;
+		if(pc > 0)
+		{
+		$("#goalsbar_" + i).show().css('width', parseInt(pc*10)/10 + '%').html(i + "<br>" + parseInt(pc*10)/10 + "%");
+		rt += parseInt(pc*10)/10;
+		}
+		else
+		{
+		$("#goalsbar_" + i).hide();
+		}
+		}
+		pc = window.clubinfo[0] / subtotal * 100;
+		$("#goalsbar_" + 0).css('width', (parseInt( (window.clubinfo[0] / subtotal * 100) *10)/10 + (100-rt)) + '%');
+
+		change_sort('', '')
+		change_group('');
+
+		});;
+
+		document.title = 'LEO Board for District ' + district + ' - ' + daterange;
+		window.history.replaceState("html", document.title, '/leoboard/' + district + '/' + daterange);
+
+		$("#districtslidertext").text( 'District ' + district );
+		$("#asofslidertext").text( daterange );
+
+		}
+
+		function display_by_area()
+		{
+		if( $("#contentarea div.byarea").length > 0)
+		{
+		return;
+		}
+
+		$("div.club").each(function(index) {
+
+		division = $(this).attr('data-division');
+		area = $(this).attr('data-area');
+
+		da = division + '_' + area;
+		if( $("#contentarea div.byarea#" + da).length > 0)
+		{
+		$(this).detach().appendTo(  $("#contentarea div.byarea#" + da) );
+		}
+		else
+		{
+		$("#contentarea").append( $("<div class='byarea row' id='" + da + "'><span class='pos'><span class='division'>Division " + division +"</span><span class='area'>Area " + area + "</span></span></div>" ));
+		$(this).detach();
+		$("#contentarea div.byarea#" + da).append($(this));
+		}
+		});
+
+		$("div.byarea").sort(function(a,b){
+		an = $(a).attr('id');
+		bn = $(b).attr('id');
+		return an.localeCompare(bn);
+
+		}).each(function(index){
+		p = $(this).parent();
+		$(this).detach().appendTo(p);
+		});
+		}
+
+		function display_by_coach()
+		{
+		if( $("#contentarea div.bycoach").length > 0)
+		{
+		return;
+		}
+
+		$("#contentarea").append( $("<div class='bycoach row' id='eligible'><span class='pos'><span class='descriptor'>Eligible For Coach</span></span></div>" ));
+		$("#contentarea").append( $("<div class='bycoach row' id='onecoach'><span class='pos'><span class='descriptor'>Has One Coach</span></span></div>" ));
+		$("#contentarea").append( $("<div class='bycoach row' id='twocoach'><span class='pos'><span class='descriptor'>Has Two Coach</span></span></div>" ));
+		$("#contentarea").append( $("<div class='bycoach row' id='other'><span class='pos'><span class='descriptor'>Neither Eligible Nor Has Coach</span></span></div>" ));
+
+		$("div.club").each(function(index) {
+
+		coaching_eligible = $(this).attr('data-coaching_eligible');
+		coaching_hascoach = $(this).attr('data-num_coaches');
+
+		if(coaching_eligible)
+		{
+		$(this).detach().appendTo(  $("#contentarea div.bycoach#eligible") );
+		}
+		else if(coaching_hascoach == 1)
+		{
+		$(this).detach().appendTo(  $("#contentarea div.bycoach#onecoach") );
+		}
+		else if(coaching_hascoach == 2)
+		{
+		$(this).detach().appendTo(  $("#contentarea div.bycoach#twocoach") );
+		}
+		else
+		{
+		$(this).detach().appendTo(  $("#contentarea div.bycoach#other") );
+		}
+
+		});
+
+		}
+
+		function display_by_dcp()
+		{
+		if( $("#contentarea div.bydcp").length > 0)
+		{
+		return;
+		}
+
+		$("div.club").each(function(index) {
+
+		goals = $(this).attr('data-goals_met');
+
+		if( $("#contentarea div.bydcp#bydcp_" + goals).length > 0)
+		{
+		$(this).detach().appendTo(  $("#contentarea div.bydcp#bydcp_" + goals) );
+		}
+		else
+		{
+		$("#contentarea").append( $("<div class='bydcp row' id='bydcp_" + goals + "' data-dcp='" + goals + "'><span class='pos'><span class='goals'>Goals " + goals +"</span></span></div>" ));
+		$(this).detach().appendTo(  $("#contentarea div.bydcp#bydcp_" + goals) );
+		}
+
+		});
+
+		$("div.bydcp").sort(function(a,b){
+		an = Math.trunc( $(a).attr('data-dcp') );
+		bn = Math.trunc( $(b).attr('data-dcp') );
+
+		dir = -1;
+
+		if(an > bn) { return dir; }
+		if(an < bn) { return -1 * dir; }
+		return 0;
+
+		}).each(function(index){
+		p = $(this).parent();
+		$(this).detach().appendTo(p);
+		});
+		}
+
+		function display_by_none()
+		{
+		$("div.club").each(function(){
+		ca = $("#contentarea");
+		$(this).detach().appendTo(ca);
+		});
+
+		$("div.bycoach").remove();
+		$("div.byarea").remove();
+		$("div.bydcp").remove();
+
+		}
+
+		function change_group(grouptype)
+		{
+		console.log('change_group(' + grouptype + ')');
+
+		if(grouptype == '')
+		{
+		grouptype = $("#GroupDisplay").data('grouptype');
+		}
+		if(grouptype == ''  || typeof grouptype == 'undefined')
+		{
+		grouptype = 'none';
+		}
+
+		if(grouptype == "none")
+		{
+		display_by_none();
+		$("#GroupDisplay")
+		.html("Grouping Disabled " + '<span class="caret"></span>')
+		.data('grouptype', grouptype);
+		change_sort('', '');
+		}
+		if(grouptype == "coach")
+		{
+		display_by_none();
+		display_by_coach();
+		$("#GroupDisplay")
+		.html("Grouping By Coaching Status " + '<span class="caret"></span>')
+		.data('grouptype', grouptype);
+		change_sort('', '');
+		}
+
+		if(grouptype == "area")
+		{
+		display_by_none();
+		display_by_area();
+		$("#GroupDisplay")
+		.html("Grouping By Area " + '<span class="caret"></span>')
+		.data('grouptype', grouptype);
+		change_sort('', '');
+		}
+		if(grouptype == "dcp")
+		{
+		display_by_none();
+		display_by_dcp();
+		$("#GroupDisplay")
+		.html("Grouping By DCP " + '<span class="caret"></span>')
+		.data('grouptype', grouptype);
+		change_sort('', '');
+		}
+
+		}
+
+		function change_sort(sorttype, sortdir)
+		{
+		console.log('change_sort(' + sorttype + ', ' + sortdir + ')');
+
+		if(sorttype == '')
+		{
+		sorttype = $("#SortDisplay").data('sorttype');
+		}
+		if(sorttype == '' || typeof sorttype == 'undefined')
+		{
+		sorttype = 'dcpgoals';
+		}
+
+		if(sortdir == '')
+		{
+		sortdir = $("#SortDisplay").data('sortdir');
+		}
+		if(sortdir == '' || typeof sortdir == 'undefined')
+		{
+		sortdir = -1;
+		}
+
+		console.log('inferred sorttype=' + sorttype + ' and sortdir=' + sortdir);
+
+		if(sorttype == "clubnumber")
+		{
+		sort_by_clubnumber(sortdir);
+		$("#SortDisplay")
+		.html("Sorting by Club Number (" + (sortdir == 1 ? 'asc' : 'desc') + ")" + '<span class="caret"></span>')
+		.data('sorttype', sorttype)
+		.data('sortdir', sortdir);
+		}
+		if(sorttype == "membership")
+		{
+		sort_by_membership(sortdir);
+		$("#SortDisplay")
+		.html("Sorting by Current Membership (" + (sortdir == 1 ? 'asc' : 'desc') + ")" + '<span class="caret"></span>')
+		.data('sorttype', sorttype)
+		.data('sortdir', sortdir);
+		}
+		if(sorttype == "dcpgoals")
+		{
+		sort_by_clubgoals(sortdir);
+		$("#SortDisplay")
+		.html("Sorting by Current DCP (" + (sortdir == 1 ? 'asc' : 'desc') + ")" + '<span class="caret"></span>')
+		.data('sorttype', sorttype)
+		.data('sortdir', sortdir);
+		}
+		if(sorttype == "dcpmembership")
+		{
+		sort_by_dcpmembership(sortdir);
+		$("#SortDisplay")
+		.html("Sorting by Required Membership For DCP (" + (sortdir == 1 ? 'asc' : 'desc') + ")" + '<span class="caret"></span>')
+		.data('sorttype', sorttype)
+		.data('sortdir', sortdir);
+		}
+
+		}
+
+		function sort_by_clubnumber(dir)
+		{
+		dir = dir || 1;
+		$("div.club").sort(function(a,b){
+		an = Math.trunc( $(a).attr('data-clubnumber') );
+		bn = Math.trunc( $(b).attr('data-clubnumber') );
+
+		if(an > bn) { return dir; }
+		if(an < bn) { return -1 * dir; }
+		return 0;
+		}).each(function(index){
+		p = $(this).parent();
+		$(this).detach().appendTo(p);
+		});
+
+		}
+
+		function sort_by_dcpmembership(dir)
+		{
+		dir = dir || 1;
+		$("div.club").sort(function(a,b){
+		an = Math.trunc( $(a).attr('data-membership_needed') );
+		bn = Math.trunc( $(b).attr('data-membership_needed') );
+
+		if(an > bn) { return dir; }
+		if(an < bn) { return -1 * dir; }
+		return 0;
+		}).each(function(index){
+		p = $(this).parent();
+		$(this).detach().appendTo(p);
+		});
+		}
+
+		function sort_by_membership(dir)
+		{
+		dir = dir || 1;
+		$("div.club").sort(function(a,b){
+		an = Math.trunc( $(a).attr('data-membership_todate') );
+		bn = Math.trunc( $(b).attr('data-membership_todate') );
+
+		if(an > bn) { return dir; }
+		if(an < bn) { return -1 * dir; }
+		return 0;
+		}).each(function(index){
+		p = $(this).parent();
+		$(this).detach().appendTo(p);
+		});
+		}
+
+		function sort_by_clubgoals(dir)
+		{
+		dir = dir || 1;
+		$("div.club").sort(function(a,b){
+		/* Primary Sort by DCP */
+		an = Math.trunc( $(a).attr('data-goals_met') );
+		bn = Math.trunc( $(b).attr('data-goals_met') );
+
+		if(an > bn) { return dir; }
+		if(an < bn) { return -1 * dir; }
+
+		/* Secondary Sort by membership */
+		an = Math.trunc( $(a).attr('data-membership_todate') );
+		bn = Math.trunc( $(b).attr('data-membership_todate') );
+		if(an > bn) { return dir; }
+		if(an < bn) { return -1 * dir; }
+
+		return 0;
+		}).each(function(index){
+		p = $(this).parent();
+		$(this).detach().appendTo(p);
+		});
+		}
+
+		window.district = $("BODY").data('district');
+		window.asof = $("BODY").data('asof');
+
+		function refresh_asof()
+		{
+		console.log('refresh_asof()');
+		return $.ajax({
+		dataType: "json",
+		url: "http://code.pachogrande.com/json/asof/" + window.district + '/',
+		success: function(data) {
+		window.asofs = [];
+		$.each( data, function( key, val ) {
+		window.asofs.push( val.asof );
+		});
+
+		val = -1;
+		for(i=0; i
+		<window.asofs.length; i++)
+		{
+		if(window.asof == window.asofs[i])
+		{
+		val = 1;
+		}
+		}
+		if(val == -1)
+		{
+		if(window.asof == 'latest')
+		{
+		val = window.asofs.length-1;
+		}
+		}
+		if(val != -1)
+		{
+		$("#asofslider").val(val);
+		}
+
+		console.log('done refresh_asof()');
+		},
+		error: function(data, textStatus, jqXHR) {
+		console.log('error in refresh_asof: ' + data.error);
+		}
+		});
+
+		}
+
+		function refresh_districts()
+		{
+		console.log('refresh_districts()');
+		return $.ajax({
+		dataType: "json",
+		url: "http://code.pachogrande.com/json/districts/",
+		success: function(data) {
+		window.districts = [];
+		$.each( data, function( key, val ) {
+		window.districts.push( val.district );
+		});
+		console.log('done refresh_districts()');
+		},
+		error: function(data, textStatus, jqXHR) {
+		console.log('error in refresh_districts: ' + data.error);
+		}
+		});
+		}
+
+		function create_sliders()
+		{
+		console.log('instantiate sliders');
+		console.log(window.asof);
+		console.log(window.district);
+		console.log(window.asofs);
+		console.log(window.districts);
+
+		val = -1;
+		for(i=0;i<window.asofs.length;i++)
+		{
+		if(window.asof == window.asofs[i]) { val = i; }
+		}
+		if(window.asof == 'latest') { val = window.asofs.length-1; }
+
+		if(val == -1) {
+		val = window.asofs.length-1;
+		}
+
+		$("#asofslider")
+		.attr('min', 0)
+		.attr('max', window.asofs.length-1 )
+		.val(val)
+		.on('input', function(){
+		val = $(this).val();
+		if(val == window.asofs.length-1)
+		{
+		text = 'latest';
+		}
+		else
+		{
+		text = window.asofs[val];
+		}
+
+		$("#asofslidertext").text( text );
+		})
+		.on('change', function() {
+		val = $(this).val();
+		if(val == window.asofs.length-1)
+		{
+		text = 'latest';
+		}
+		else
+		{
+		text = window.asofs[val];
+		}
+		window.asof = text;
+		changeto(window.district, window.asof);
+
+		});
+
+		val = -1;
+		for(i=0;i<=window.districts.length;i++)
+		{
+		if(window.district == window.districts[i]) { val = i; }
+		}
+
+		$("#districtslider")
+		.attr('min', 0)
+		.attr('max', (window.districts.length-1) )
+		.val(val)
+		.on('change', function(){
+		mydistrict = window.districts[ $('#districtslider').val()  ];
+		console.log('changing district from ' + window.district + ' to ' + mydistrict);
+		window.district = mydistrict;
+		changeto(window.district, window.asof);
+		refresh_asof();
+
+		})
+		.on('input', function(){
+		val = $(this).val();
+		text = window.districts[val];
+
+		$("#districtslidertext").text( 'District ' + text );
+		});
+
+		changeto(window.district, window.asof);
+
+		}
+
+		$.when(
+		refresh_asof(),
+		refresh_districts()
+		).done(function() {
+		create_sliders()
+
+		});
+
+		function pt(num)
+		{
+		var out = parseInt(( num * 1000))/10 + '%';
+		return out;
+		}
+
+		function fx(num,precision)
+		{
+		if(!precision) { precision = 10; }
+		return Math.round((num)*precision)/precision;
+		}
+
+		$(document).uitooltip({
+		items: "div.club,div#goalsbar div,div.districtrow",
+		content: function() {
+		var e = $(this);
+		if(e.hasClass('club'))
+		{
+
+		out = '<table>';
+		out += '<tr><td colspan=2><b><u>' + e.attr('data-clubname') + '</u></b></td></tr>';
+		out += '<tr><th>Club Number</th><td>' + e.attr('data-clubnumber') + '</td></tr>';
+		out += '<tr><th>Area</th><td>' + e.attr('data-area') + '</td></tr>';
+		out += '<tr><th>Division</th><td>' + e.attr('data-division') + '</td></tr>';
+		out += '<tr><th>District</th><td>' + e.attr('data-district') + '</td></tr>';
+		out += '<tr><th>Membership Base</th><td>' + e.attr('data-membership_base') + '</td></tr>';
+		out += '<tr><th>Membership Required</th><td>' + e.attr('data-membership_required') + '</td></tr>';
+		out += '<tr><th>Membership To Date</th><td>' + e.attr('data-membership_todate') + '</td></tr>';
+		out += '<tr><th>Current DCP Goals</th><td>' + e.attr('data-goals_met') + '</td></tr>';
+		out += '<tr><th>YTD membership retention</th><td>' + Math.floor(e.attr('data-retention')*100) + '%</td></tr>';
+		out += '<tr><th>LEO says</th><td>' + e.attr('data-advice') + '</td></tr>';
+		out += '<tr><th>Current Status</th><td>';
+
+		good = '<td style="background-color:#00ff00; border: solid black 1px; text-align: center;" width="10%">';
+		ok = '<td style="background-color:#ffff00; border: solid black 1px; text-align: center;" width="10%">';
+		bad = '<td style="background-color:#ff0000; border: solid black 1px; text-align: center;" width="10%">';
+
+		t = '<table width=100%><tr>' +
+		( e.attr('data-dcp_01_todate') >= 2 ? good : e.attr('data-dcp_01_todate') == 1 ? ok : bad ) + e.attr('data-dcp_01_todate') + '</td>' +
+		( e.attr('data-dcp_02_todate') >= 2 ? good : e.attr('data-dcp_02_todate') == 1 ? ok : bad ) + e.attr('data-dcp_02_todate') + '</td>' +
+		( e.attr('data-dcp_03_todate') >= 1 ? good : bad ) + e.attr('data-dcp_03_todate') + '</td>' +
+			( e.attr('data-dcp_04_todate') >= 1 ? good : bad ) + e.attr('data-dcp_04_todate') + '</td>' +
+			( e.attr('data-dcp_05_todate') >= 1 ? good : bad ) + e.attr('data-dcp_05_todate') + '</td>' +
+			( e.attr('data-dcp_06_todate') >= 1 ? good : bad ) + e.attr('data-dcp_06_todate') + '</td>' +
+			( e.attr('data-dcp_07_todate') >= 4 ? good : e.attr('data-dcp_07_todate') >= 2 ? ok : bad ) + e.attr('data-dcp_07_todate') + '</td>' +
+			( e.attr('data-dcp_08_todate') >= 4 ? good : e.attr('data-dcp_08_todate') >= 2 ? ok : bad ) + e.attr('data-dcp_08_todate') + '</td>' +
+			( e.attr('data-dcp_09a_todate') >= 4 && e.attr('data-dcp_09b_todate') >= 4 ? good : e.attr('data-dcp_09a_todate') >= 4 || e.attr('data-dcp_09b_todate') >= 4 ? ok : bad ) + e.attr('data-dcp_09a_todate') + '/' + e.attr('data-dcp_09b_todate') + '</td>' +
+			( e.attr('data-dcp_10a_todate') >= 1 && e.attr('data-dcp_10b_todate') >= 1 ? good : e.attr('data-dcp_10a_todate') >= 1 || e.attr('data-dcp_10b_todate') >= 1 ? ok : bad ) + e.attr('data-dcp_10a_todate') + '/' + e.attr('data-dcp_10b_todate') + '</td>' +
+			'</tr></table>';
+
+			out += t;
+			out += '</td></tr>';
+			out += '</table>';
+
+			return out;
+
+			}
+			else if(e.hasClass('districtrow'))
+			{
+			tc = $("div.club").length;
+			out = '<h3>Of all clubs in District - total ' + tc + '</h3>';
+
+			need_members = $("div.club[data-membership_needed^=\"-\"]").length;
+			out += need_members + ' (' + pt(need_members/tc)+ ') of these clubs are not meeting the membership requirement.<br>';
+
+			have_coaches = $("div.club[data-num_coaches]").length;
+			out += have_coaches + ' club(s) has a club coach(es).<br>';
+
+			need_coaches = $("div.club[data-coaching_eligible=1]").length;
+			out += need_coaches + ' club(s) don\'t have a club coach.<br>';
+
+			membership_total = 0;
+			$("div.club").each(function(){
+			membership_total += parseInt( $(this).attr('data-membership_todate') );
+			});
+			out += fx(membership_total/tc) + ' members on average<br>';
+
+			return out;
+
+			}
+			else
+			{
+			gc = parseInt( e.attr('data-goals_met') );
+
+			tc = $("div.club").length;
+			mc = $("div.club[data-goals_met=" + gc + "]").length;
+
+			out = '<h3>Clubs with ' + gc + ' DCP ' + (gc == 1 ? 'goal' : 'goals')  + ' ' + mc + '/' + tc + ' (' + pt(mc/tc) + ')</h3>';
+
+			need_members = $("div.club[data-goals_met=" + gc + "][data-membership_needed^=\"-\"]").length;
+			out += need_members + ' (' + pt(need_members/mc)+ ') of these clubs are not meeting the membership requirement.<br>';
+
+			have_coaches = $("div.club[data-goals_met=" + gc + "][data-num_coaches]").length;
+			out += have_coaches + ' club(s) has a club coach(es).<br>';
+
+			need_coaches = $("div.club[data-goals_met=" + gc + "][data-coaching_eligible=1]").length;
+			out += need_coaches + ' club(s) don\'t have a club coach.<br>';
+
+			membership_total = 0;
+			$("div.club[data-goals_met=" + gc + "]").each(function(){
+			membership_total += parseInt( $(this).attr('data-membership_todate') );
+			});
+			out += fx(membership_total/mc) + ' members on average<br>';
+
+			return out;
+			}
+
+			}
+			});
+
+			$("div.club,div#goalsbar div").click(function() {
+			$(this).uitooltip("open");
+
+			});
+
+			$("#helpvideo").on('click', function(){
+			window.location.href = "https://www.youtube.com/watch?v=2jydlBk_bGs";
+			});
+
+</script>
+
+<div class="modal"></div>	
+</body>
+</html>
