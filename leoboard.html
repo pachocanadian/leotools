@@ -784,20 +784,20 @@
 		}
 
 		$("#districtslider")
-		.attr('min', 0)
-		.attr('max', (window.districts.length-1) )
-		.val(val)
-		.on('change', function(){
-		mydistrict = window.districts[ $('#districtslider').val()  ];
-		console.log('changing district from ' + window.district + ' to ' + mydistrict);
-		window.district = mydistrict;
-
-		})
+			.attr('min', 0)
+			.attr('max', (window.districts.length-1) )
+			.val(val)
+			.on('change', function(){
+				mydistrict = window.districts[ $('#districtslider').val()  ];
+				console.log('changing district from ' + window.district + ' to ' + mydistrict);
+				window.district = mydistrict;
+				changeto(window.district);
+			})
 		.on('input', function(){
-		val = $(this).val();
-		text = window.districts[val];
-
-		$("#districtslidertext").text( 'District ' + text );
+			val = $(this).val();
+			text = window.districts[val];
+	
+			$("#districtslidertext").text( 'District ' + text );
 		});
 
 		changeto(window.district);
