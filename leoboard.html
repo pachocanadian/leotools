@@ -13,9 +13,6 @@
 			height: 200px;
 		}
 
-		#asofslidertext {
-		}
-
 		#districtslidertext {
 		}
 
@@ -172,13 +169,15 @@
 	<script src="http://code.pachogrande.com/jqueryui-bootstrap-bridge.js"></script>
 	
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	
+	<script src="js/leotools-common.js"></script>
 		
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	
-	<title>LEO Board for District 96 - latest</title>
+	<title>LEO Board for District 96</title>
 	
 </head>
-<body data-district="96" data-asof="latest">
+<body data-district="96">
 
 <nav class="navbar-inverse">
 	<div class="container-fluid">
@@ -258,14 +257,6 @@
 	</div>
 
 	<div class="row">
-		<div class="col-xs-3 col-md-1 text-right">When:</div>
-		<div class="col-xs-9 col-md-11"><input type="range" id="asofslider" list="asofnumbers" />
-
-		</div>
-		<div id="asofslidertext" class="col-xs-12 text-center">latest</div>
-	</div>
-	
-	<div class="row">
 		<div class="col-xs-12">
 			<div class="progress" id="goalsbar"><div class="progress-bar" id="goalsbar_10"></div><div class="progress-bar" id="goalsbar_9"></div><div class="progress-bar" id="goalsbar_8"></div><div class="progress-bar" id="goalsbar_7"></div><div class="progress-bar" id="goalsbar_6"></div><div class="progress-bar" id="goalsbar_5"></div><div class="progress-bar" id="goalsbar_4"></div><div class="progress-bar" id="goalsbar_3"></div><div class="progress-bar" id="goalsbar_2"></div><div class="progress-bar" id="goalsbar_1"></div><div class="progress-bar" id="goalsbar_0"></div></div>
 		</div>
@@ -283,52 +274,75 @@
 		ajaxStop: function() { $("body").removeClass("loading"); }
 		});
 
-		function changeto(district,daterange)
+		function changeto(district)
 		{
 		var xhr;
 
-		console.log('changeto(district=' + district + ',daterange=' + daterange + ')');
+		console.log('changeto(district=' + district + ')');
 
-		url = "/json/clubsummary/" + daterange + "/" + district;
-		console.log('pulling JSON=http://code.pachogrande.com' + url);
-
-		xhr = $.getJSON( url , function( data ) {
-		console.log('starting JSON pull');
-		$("div#contentarea div").remove();
-
-		console.log('data has ' + data.length + ' items in it');
-		if(data.length == 0)
-		{
-		console.log('changing asof=latest and refreshing...');
-		window.asof = 'latest';
-		xhr.abort();
-		changeto(window.district, window.asof);
-
-		}
-
-		$.each( data, function( key, val ) {
-
-		jq = $( "<div class='col-xs-3 col-sm-3 col-md-2 col-lg-1 club' id='club_" + val.clubnumber + "'>" +
-			"<span class=clubname>" 	+ val.clubname 		+ "</span>" +
-			"<span class=goals_met>" 	+ val.goals_met 	+ "</span>" +
-			"<span class=membership_needed>" 	+ ( val.membership_needed > 0 ? '+' : '' ) + val.membership_needed 	+ "</span>" +
-			( val.coaching_eligible >= 1 ? '<span class=coaching_eligible>Coach?</span>' : '' ) +
-			( val.num_coaches >= 1 ? '<span class=coaching_current>Coach!</span>' : '' ) +
-			"</div>" );
-
-		$.each( val, function( ekey, eval) {
-		jq.attr('data-' + ekey, eval);
-		});
-
-		$("div#contentarea").append(jq);
-
-		console.log('...added club ');
-
-		});
-		console.log('complete JSON pull');
-
-		})
-		.done(function() {
+		var LT = new Leotools({'district': district});
+		proxy_url = LT.cors_proxy + LT.current_club_performance_url();
+		$.ajax({
+		  url: proxy_url,
+		  method: "GET",
+		  dataType: "html",
+		  success: function(res) {
+		  	console.log("Successful pull via AJAX");
+		  	
+		  	jsonArray = jQuery.parseJSON(res);
+		  	
+		  	columns = jsonArray[0];
+		  	coldefs = [];
+		  	for(i=0; i<columns.length; i++)
+		  	{
+		  		baseStr = columns[i];
+		  		baseStr = baseStr.replace(/[.@#$%\^&*=_+"'\/<>\\\|{}\[\]]/g,"");
+				baseStr = baseStr.replace(/[\t ]+/g,'');
+        		baseStr = baseStr.replace(/\n{1,}/g,'');
+        		
+        		// console.log(baseStr);		  				  		
+		  		columns[i] = baseStr;
+		  		
+		  	}
+		  	
+		  	// Shift the header row from the data
+			jsonArray.shift();
+			
+			// The last two rows indicate when the information was pulled, pop them out of the way before rendering
+			jsonArray.pop();
+		  	jsonArray.pop();
+		  				  	
+			$("div#contentarea div").remove();
+	
+			console.log('data has ' + jsonArray.length + ' items in it');
+	
+			$.each( jsonArray, function( key, v ) {
+				var val = {};
+				for(i=0; i<v.length; i++)
+				{
+					val[ columns[i] ] = v[i];
+				}
+				
+	
+				jq = $( "<div class='col-xs-3 col-sm-3 col-md-2 col-lg-1 club' id='club_" + val.clubnumber + "'>" +
+					"<span class=clubname>" 	+ val.clubname 		+ "</span>" +
+					"<span class=goals_met>" 	+ val.goals_met 	+ "</span>" +
+					"<span class=membership_needed>" 	+ ( val.membership_needed > 0 ? '+' : '' ) + val.membership_needed 	+ "</span>" +
+					( val.coaching_eligible >= 1 ? '<span class=coaching_eligible>Coach?</span>' : '' ) +
+					( val.num_coaches >= 1 ? '<span class=coaching_current>Coach!</span>' : '' ) +
+					"</div>" );
+		
+				$.each( val, function( ekey, eval) {
+					jq.attr('data-' + ekey, eval);
+				});
+		
+				$("div#contentarea").append(jq);
+		
+				console.log('...added club ');
+		  	
+		 	});
+		 }
+		}).done(function() {
 		console.log('JSON pull complete, firing done()');
 		//$(window).resize();
 
@@ -402,11 +416,10 @@
 
 		});;
 
-		document.title = 'LEO Board for District ' + district + ' - ' + daterange;
-		window.history.replaceState("html", document.title, '/leoboard/' + district + '/' + daterange);
+		document.title = 'LEO Board for District ' + district;
+		//window.history.replaceState("html", document.title, '/leoboard/' + district + '/' + daterange);
 
 		$("#districtslidertext").text( 'District ' + district );
-		$("#asofslidertext").text( daterange );
 
 		}
 
@@ -684,8 +697,8 @@
 		{
 		dir = dir || 1;
 		$("div.club").sort(function(a,b){
-		an = Math.trunc( $(a).attr('data-membership_todate') );
-		bn = Math.trunc( $(b).attr('data-membership_todate') );
+		an = Math.trunc( $(a).attr('data-activemembers') );
+		bn = Math.trunc( $(b).attr('data-activemembers') );
 
 		if(an > bn) { return dir; }
 		if(an < bn) { return -1 * dir; }
@@ -708,8 +721,8 @@
 		if(an < bn) { return -1 * dir; }
 
 		/* Secondary Sort by membership */
-		an = Math.trunc( $(a).attr('data-membership_todate') );
-		bn = Math.trunc( $(b).attr('data-membership_todate') );
+		an = Math.trunc( $(a).attr('data-activemembers') );
+		bn = Math.trunc( $(b).attr('data-activemembers') );
 		if(an > bn) { return dir; }
 		if(an < bn) { return -1 * dir; }
 
@@ -721,119 +734,42 @@
 		}
 
 		window.district = $("BODY").data('district');
-		window.asof = $("BODY").data('asof');
-
-		function refresh_asof()
-		{
-		console.log('refresh_asof()');
-		return $.ajax({
-		dataType: "json",
-		url: "http://code.pachogrande.com/json/asof/" + window.district + '/',
-		success: function(data) {
-		window.asofs = [];
-		$.each( data, function( key, val ) {
-		window.asofs.push( val.asof );
-		});
-
-		val = -1;
-		for(i=0; i
-		<window.asofs.length; i++)
-		{
-		if(window.asof == window.asofs[i])
-		{
-		val = 1;
-		}
-		}
-		if(val == -1)
-		{
-		if(window.asof == 'latest')
-		{
-		val = window.asofs.length-1;
-		}
-		}
-		if(val != -1)
-		{
-		$("#asofslider").val(val);
-		}
-
-		console.log('done refresh_asof()');
-		},
-		error: function(data, textStatus, jqXHR) {
-		console.log('error in refresh_asof: ' + data.error);
-		}
-		});
-
-		}
 
 		function refresh_districts()
 		{
-		console.log('refresh_districts()');
-		return $.ajax({
-		dataType: "json",
-		url: "http://code.pachogrande.com/json/districts/",
-		success: function(data) {
-		window.districts = [];
-		$.each( data, function( key, val ) {
-		window.districts.push( val.district );
-		});
-		console.log('done refresh_districts()');
-		},
-		error: function(data, textStatus, jqXHR) {
-		console.log('error in refresh_districts: ' + data.error);
-		}
-		});
+			var LT = new Leotools();
+			proxy_url = LT.cors_proxy + LT.current_district_summary_url();
+			$.ajax({
+			  url: proxy_url,
+			  method: "GET",
+			  dataType: "html",
+			  success: function(res) 
+				{			  	
+				  	jsonArray = jQuery.parseJSON(res);
+				  	jsonArray.shift();
+					jsonArray.pop();
+				  	jsonArray.pop();
+				  	
+				  	district_list = [];
+				  	for(i=0; i<jsonArray.length; i++)
+				  	{
+				  		district_list.push( jsonArray[i][1]);
+				  	}
+					district_list.sort();
+					window.districts = district_list;
+					
+					create_sliders();
+				}
+			});
+			
+
 		}
 
 		function create_sliders()
 		{
 		console.log('instantiate sliders');
-		console.log(window.asof);
 		console.log(window.district);
-		console.log(window.asofs);
 		console.log(window.districts);
-
-		val = -1;
-		for(i=0;i<window.asofs.length;i++)
-		{
-		if(window.asof == window.asofs[i]) { val = i; }
-		}
-		if(window.asof == 'latest') { val = window.asofs.length-1; }
-
-		if(val == -1) {
-		val = window.asofs.length-1;
-		}
-
-		$("#asofslider")
-		.attr('min', 0)
-		.attr('max', window.asofs.length-1 )
-		.val(val)
-		.on('input', function(){
-		val = $(this).val();
-		if(val == window.asofs.length-1)
-		{
-		text = 'latest';
-		}
-		else
-		{
-		text = window.asofs[val];
-		}
-
-		$("#asofslidertext").text( text );
-		})
-		.on('change', function() {
-		val = $(this).val();
-		if(val == window.asofs.length-1)
-		{
-		text = 'latest';
-		}
-		else
-		{
-		text = window.asofs[val];
-		}
-		window.asof = text;
-		changeto(window.district, window.asof);
-
-		});
 
 		val = -1;
 		for(i=0;i<=window.districts.length;i++)
@@ -849,8 +785,6 @@
 		mydistrict = window.districts[ $('#districtslider').val()  ];
 		console.log('changing district from ' + window.district + ' to ' + mydistrict);
 		window.district = mydistrict;
-		changeto(window.district, window.asof);
-		refresh_asof();
 
 		})
 		.on('input', function(){
@@ -860,17 +794,9 @@
 		$("#districtslidertext").text( 'District ' + text );
 		});
 
-		changeto(window.district, window.asof);
+		changeto(window.district);
 
 		}
-
-		$.when(
-		refresh_asof(),
-		refresh_districts()
-		).done(function() {
-		create_sliders()
-
-		});
 
 		function pt(num)
 		{
@@ -897,9 +823,9 @@
 		out += '<tr><th>Area</th><td>' + e.attr('data-area') + '</td></tr>';
 		out += '<tr><th>Division</th><td>' + e.attr('data-division') + '</td></tr>';
 		out += '<tr><th>District</th><td>' + e.attr('data-district') + '</td></tr>';
-		out += '<tr><th>Membership Base</th><td>' + e.attr('data-membership_base') + '</td></tr>';
+		out += '<tr><th>Membership Base</th><td>' + e.attr('data-membase') + '</td></tr>';
 		out += '<tr><th>Membership Required</th><td>' + e.attr('data-membership_required') + '</td></tr>';
-		out += '<tr><th>Membership To Date</th><td>' + e.attr('data-membership_todate') + '</td></tr>';
+		out += '<tr><th>Membership To Date</th><td>' + e.attr('data-activemembers') + '</td></tr>';
 		out += '<tr><th>Current DCP Goals</th><td>' + e.attr('data-goals_met') + '</td></tr>';
 		out += '<tr><th>YTD membership retention</th><td>' + Math.floor(e.attr('data-retention')*100) + '%</td></tr>';
 		out += '<tr><th>LEO says</th><td>' + e.attr('data-advice') + '</td></tr>';
@@ -945,7 +871,7 @@
 
 			membership_total = 0;
 			$("div.club").each(function(){
-			membership_total += parseInt( $(this).attr('data-membership_todate') );
+			membership_total += parseInt( $(this).attr('data-activemembers') );
 			});
 			out += fx(membership_total/tc) + ' members on average<br>';
 
@@ -972,7 +898,7 @@
 
 			membership_total = 0;
 			$("div.club[data-goals_met=" + gc + "]").each(function(){
-			membership_total += parseInt( $(this).attr('data-membership_todate') );
+			membership_total += parseInt( $(this).attr('data-activemembers') );
 			});
 			out += fx(membership_total/mc) + ' members on average<br>';
 
@@ -990,6 +916,8 @@
 			$("#helpvideo").on('click', function(){
 			window.location.href = "https://www.youtube.com/watch?v=2jydlBk_bGs";
 			});
+			
+			refresh_districts();
 
 </script>
 
