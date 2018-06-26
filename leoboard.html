@@ -326,7 +326,76 @@
 				
 				val['membershiprequired'] = (parseInt(val['membase']) <= 15 ? (parseInt(val['membase']) + 5) : 20 );
 				val['membershipneeded'] = ( val['activemembers'] - val['membershiprequired'] );
-				val['coachingeligible'] = parseInt( val['activemembers'] >= 8 && val['activemembers'] <= 12 ); 
+				val['coachingeligible'] = parseInt( val['activemembers'] >= 8 && val['activemembers'] <= 12 );
+				
+				val['advice'] = '';
+				if(val.goalsmet == 0)
+				{
+					val['advice'] = 'A champion could get this club rocking! ';
+				}
+				else if(val.goalsmet == 1)
+				{
+					val['advice'] = 'A plan and a champion could get this club rocking! ';
+				}
+				else if(val.goalsmet == 2)
+				{
+					val['advice'] = 'A plan and a champion could get this club rocking! ';
+				}
+				else if(val.goalsmet == 3)
+				{
+					val['advice'] = 'Two more DCP points till Distinguished Club! ';
+				}
+				else if(val.goalsmet == 4)
+				{
+					val['advice'] = 'One more DCP point till Distinguished Club! ';
+				}
+				else if(val.goalsmet == 5)
+				{
+					val['recog'] = 'Distinguished Club! ';					
+					val['next'] = 'Only two more goals until Select Distinguished! ';
+					val['advice'] = val['recog'] + val['next'];
+				}
+				else if(val.goalsmet == 6)
+				{
+					val['recog'] = 'Distinguished Club! ';					
+					val['next'] = 'Only one more goal until Select Distinguished! ';
+					val['advice'] = val['recog'] + val['next'];
+				}
+				else if(val.goalsmet == 7)
+				{
+					val['recog'] = 'Selected Distinguished Club! ';					
+					val['next'] = 'Only two more goals until Presidents Distinguished! ';
+					val['advice'] = val['recog'] + val['next'];
+				}
+				else if(val.goalsmet == 8)
+				{
+					val['recog'] = 'Selected Distinguished Club! ';					
+					val['next'] = 'Only one more goals until Presidents Distinguished! ';
+					val['advice'] = val['recog'] + val['next'];
+				}
+				else if(val.goalsmet == 9)
+				{
+					val['recog'] = 'Presidents Distinguished Club! ';					
+					val['next'] = 'Only one more goals until a perfect 10/10! ';
+					val['advice'] = val['recog'] + val['next'];
+				}
+				else if(val.goalsmet == 10)
+				{
+					val['recog'] = 'Presidents Distinguished Club! ';					
+					val['next'] = 'Flawless! ';
+					val['advice'] = val['recog'] + val['next'];
+				}
+				
+				if(val['coachingeligible'])
+				{
+					val['advice'] += 'Did you know you qualify for a club coach? ';					
+				}
+				
+				if(val['clubstatus'] == 'Suspended')
+				{
+					val['advice'] += '<span class=urgent>You are in danger of losing your club charter - get district help immediately!</span> ';					
+				}
+				
 				
 				val['retention'] = (parseInt(val['membase']) / (parseInt(val['membase']) + parseInt(val['newmembers']) + parseInt(val['addnewmembers'])));
 				
@@ -842,16 +911,16 @@
 		bad = '<td style="background-color:#ff0000; border: solid black 1px; text-align: center;" width="10%">';
 
 		t = '<table width=100%><tr>' +
-		( e.attr('data-dcp_01_todate') >= 2 ? good : e.attr('data-dcp_01_todate') == 1 ? ok : bad ) + e.attr('data-dcp_01_todate') + '</td>' +
-		( e.attr('data-dcp_02_todate') >= 2 ? good : e.attr('data-dcp_02_todate') == 1 ? ok : bad ) + e.attr('data-dcp_02_todate') + '</td>' +
-		( e.attr('data-dcp_03_todate') >= 1 ? good : bad ) + e.attr('data-dcp_03_todate') + '</td>' +
-			( e.attr('data-dcp_04_todate') >= 1 ? good : bad ) + e.attr('data-dcp_04_todate') + '</td>' +
-			( e.attr('data-dcp_05_todate') >= 1 ? good : bad ) + e.attr('data-dcp_05_todate') + '</td>' +
-			( e.attr('data-dcp_06_todate') >= 1 ? good : bad ) + e.attr('data-dcp_06_todate') + '</td>' +
-			( e.attr('data-dcp_07_todate') >= 4 ? good : e.attr('data-dcp_07_todate') >= 2 ? ok : bad ) + e.attr('data-dcp_07_todate') + '</td>' +
-			( e.attr('data-dcp_08_todate') >= 4 ? good : e.attr('data-dcp_08_todate') >= 2 ? ok : bad ) + e.attr('data-dcp_08_todate') + '</td>' +
-			( e.attr('data-dcp_09a_todate') >= 4 && e.attr('data-dcp_09b_todate') >= 4 ? good : e.attr('data-dcp_09a_todate') >= 4 || e.attr('data-dcp_09b_todate') >= 4 ? ok : bad ) + e.attr('data-dcp_09a_todate') + '/' + e.attr('data-dcp_09b_todate') + '</td>' +
-			( e.attr('data-dcp_10a_todate') >= 1 && e.attr('data-dcp_10b_todate') >= 1 ? good : e.attr('data-dcp_10a_todate') >= 1 || e.attr('data-dcp_10b_todate') >= 1 ? ok : bad ) + e.attr('data-dcp_10a_todate') + '/' + e.attr('data-dcp_10b_todate') + '</td>' +
+		( e.attr('data-ccs') >= 2 ? good : e.attr('data-ccs') == 1 ? ok : bad ) + e.attr('data-ccs') + '</td>' +
+		( e.attr('data-addccs') >= 2 ? good : e.attr('data-addccs') == 1 ? ok : bad ) + e.attr('data-addccs') + '</td>' +
+		( e.attr('data-acs') >= 1 ? good : bad ) + e.attr('data-acs') + '</td>' +
+			( e.attr('data-addacs') >= 1 ? good : bad ) + e.attr('data-addacs') + '</td>' +
+			( e.attr('data-claldtms') >= 1 ? good : bad ) + e.attr('data-claldtms') + '</td>' +
+			( e.attr('data-addclaldtms') >= 1 ? good : bad ) + e.attr('data-addclaldtms') + '</td>' +
+			( e.attr('data-newmembers') >= 4 ? good : e.attr('data-newmembers') >= 2 ? ok : bad ) + e.attr('data-newmembers') + '</td>' +
+			( e.attr('data-addnewmembers') >= 4 ? good : e.attr('data-addnewmembers') >= 2 ? ok : bad ) + e.attr('data-addnewmembers') + '</td>' +
+			( e.attr('data-offtrainedround1') >= 4 && e.attr('data-offtrainedround2') >= 4 ? good : e.attr('data-offtrainedround1') >= 4 || e.attr('data-offtrainedround2') >= 4 ? ok : bad ) + e.attr('data-offtrainedround1') + '/' + e.attr('data-offtrainedround2') + '</td>' +
+			( e.attr('data-memduesontimeoct') >= 1 && e.attr('data-memduesontimeapr') >= 1 ? good : e.attr('data-memduesontimeoct') >= 1 || e.attr('data-memduesontimeapr') >= 1 ? ok : bad ) + e.attr('data-memduesontimeoct') + '/' + e.attr('data-memduesontimeapr') + '</td>' +
 			'</tr></table>';
 
 			out += t;
