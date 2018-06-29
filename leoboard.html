@@ -808,6 +808,12 @@
 		});
 		}
 
+		searchParams = new URLSearchParams(window.location.search);
+		if(searchParams.has('district'))
+		{
+			$("BODY").data('district', searchParams.get('district'));	
+		}
+		
 		window.district = $("BODY").data('district');
 
 		function refresh_districts()
@@ -860,6 +866,7 @@
 				mydistrict = window.districts[ $('#districtslider').val()  ];
 				console.log('changing district from ' + window.district + ' to ' + mydistrict);
 				window.district = mydistrict;
+				window.history.pushState("", "LEO Board for District " + mydistrict, "leoboard.html?district=" + district);
 				changeto(window.district);
 			})
 		.on('input', function(){
