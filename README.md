@@ -3,7 +3,7 @@ Client-side data tools for working with online public speaking information
 
 ## Website
 
-See [http://code.pachogrande.com/leotools/](http://code.pachogrande.com/leotools/) for live sample files
+See [https://code.pachogrande.com/leotools/](https://code.pachogrande.com/leotools/) for live sample files
 
 ## Roadmap
 
