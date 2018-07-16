@@ -816,6 +816,8 @@
 		
 		window.district = $("BODY").data('district');
 
+		
+
 		function refresh_districts()
 		{
 			var LT = new Leotools();
@@ -836,7 +838,38 @@
 				  	{
 				  		district_list.push( jsonArray[i][1]);
 				  	}
-					district_list.sort();
+					district_list.sort( function cmp_district(a,b) {
+							cmp_A = '';
+							if(a == 'F')
+							{
+								cmp_A = -1;
+							}
+							else if(a == 'U')
+							{
+								cmp_A = 500;
+							}
+							else
+							{
+								cmp_A = parseInt(a);
+							}
+							
+							cmp_B = '';
+							if(b == 'F')
+							{
+								cmp_B = -1;
+							}
+							else if(b == 'U')
+							{
+								cmp_B = 500;
+							}
+							else
+							{
+								cmp_B = parseInt(b);
+							}
+							
+							return (cmp_A > cmp_B) ? 1 : ( (cmp_B > cmp_A) ? -1 : 0 );			
+						}
+				);
 					window.districts = district_list;
 					
 					create_sliders();
@@ -849,8 +882,8 @@
 		function create_sliders()
 		{
 		console.log('instantiate sliders');
-		console.log(window.district);
-		console.log(window.districts);
+		console.log('window.district=' + window.district);
+		console.log('window.districts=' + window.districts);
 
 		val = -1;
 		for(i=0;i<=window.districts.length;i++)
@@ -945,12 +978,6 @@
 			need_members = $("div.club[data-membershipneeded^=\"-\"]").length;
 			out += need_members + ' (' + pt(need_members/tc)+ ') of these clubs are not meeting the membership requirement.<br>';
 
-			have_coaches = $("div.club[data-num_coaches]").length;
-			out += have_coaches + ' club(s) has a club coach(es).<br>';
-
-			need_coaches = $("div.club[data-coaching_eligible=1]").length;
-			out += need_coaches + ' club(s) don\'t have a club coach.<br>';
-
 			membership_total = 0;
 			$("div.club").each(function(){
 			membership_total += parseInt( $(this).attr('data-activemembers') );
@@ -971,12 +998,6 @@
 
 			need_members = $("div.club[data-goalsmet=" + gc + "][data-membershipneeded^=\"-\"]").length;
 			out += need_members + ' (' + pt(need_members/mc)+ ') of these clubs are not meeting the membership requirement.<br>';
-
-			have_coaches = $("div.club[data-goalsmet=" + gc + "][data-num_coaches]").length;
-			out += have_coaches + ' club(s) has a club coach(es).<br>';
-
-			need_coaches = $("div.club[data-goalsmet=" + gc + "][data-coaching_eligible=1]").length;
-			out += need_coaches + ' club(s) don\'t have a club coach.<br>';
 
 			membership_total = 0;
 			$("div.club[data-goalsmet=" + gc + "]").each(function(){
