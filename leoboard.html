@@ -23,27 +23,6 @@
 			/*text-shadow: rgba(0,0,0,.01) 0 0 1px;*/
 		}
 
-		.club .coaching_eligible {
-			position: absolute;
-			top: 2%;
-			right: 2%;
-			text-align: right;
-			background: rgba(255,000,000,1);
-			color: white;
-			line-height: 90%;
-			padding: 2px;
-		}
-
-		.club .coaching_current {
-			position: absolute;
-			top: 2%;
-			right: 2%;
-			text-align: right;
-			background: rgba(127,255,000,1);
-			line-height: 90%;
-			padding: 2px;
-		}
-
 		.club .clubname {
 			position: absolute;
 			bottom: 2%;
@@ -233,9 +212,6 @@
 						<li>
 							<a href="javascript:change_group('dcp')">By DCP</a>
 						</li>
-						<li>
-							<a href="javascript:change_group('coach')">By Coaching Status</a>
-						</li>
 					</ul>
 				</li>
 			</ul>
@@ -406,7 +382,6 @@
 					"<span class=goalsmet>" 	+ val.goalsmet 	+ "</span>" +
 					"<span class=membershipneeded>" 	+ ( val.membershipneeded > 0 ? '+' : '' ) + val.membershipneeded 	+ "</span>" +
 					( val.coaching_eligible >= 1 ? '<span class=coaching_eligible>Coach?</span>' : '' ) +
-					( val.num_coaches >= 1 ? '<span class=coaching_current>Coach!</span>' : '' ) +
 					"</div>" );
 		
 				$.each( val, function( ekey, eval) {
@@ -532,44 +507,6 @@
 		p = $(this).parent();
 		$(this).detach().appendTo(p);
 		});
-		}
-
-		function display_by_coach()
-		{
-		if( $("#contentarea div.bycoach").length > 0)
-		{
-		return;
-		}
-
-		$("#contentarea").append( $("<div class='bycoach row' id='eligible'><span class='pos'><span class='descriptor'>Eligible For Coach</span></span></div>" ));
-		$("#contentarea").append( $("<div class='bycoach row' id='onecoach'><span class='pos'><span class='descriptor'>Has One Coach</span></span></div>" ));
-		$("#contentarea").append( $("<div class='bycoach row' id='twocoach'><span class='pos'><span class='descriptor'>Has Two Coach</span></span></div>" ));
-		$("#contentarea").append( $("<div class='bycoach row' id='other'><span class='pos'><span class='descriptor'>Neither Eligible Nor Has Coach</span></span></div>" ));
-
-		$("div.club").each(function(index) {
-
-		coaching_eligible = $(this).attr('data-coaching_eligible');
-		coaching_hascoach = $(this).attr('data-num_coaches');
-
-		if(coaching_eligible)
-		{
-		$(this).detach().appendTo(  $("#contentarea div.bycoach#eligible") );
-		}
-		else if(coaching_hascoach == 1)
-		{
-		$(this).detach().appendTo(  $("#contentarea div.bycoach#onecoach") );
-		}
-		else if(coaching_hascoach == 2)
-		{
-		$(this).detach().appendTo(  $("#contentarea div.bycoach#twocoach") );
-		}
-		else
-		{
-		$(this).detach().appendTo(  $("#contentarea div.bycoach#other") );
-		}
-
-		});
-
 		}
 
 		function display_by_dcp()
