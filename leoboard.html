@@ -263,7 +263,7 @@
 		  method: "GET",
 		  dataType: "html",
 		  success: function(res) {
-		  	console.log("Successful pull via AJAX");
+		  	console.log("Successful pull of district=" + district + " via AJAX");
 		  	
 		  	jsonArray = jQuery.parseJSON(res);
 		  	
@@ -375,7 +375,7 @@
 				
 				val['retention'] = (parseInt(val['membase']) / (parseInt(val['membase']) + parseInt(val['newmembers']) + parseInt(val['addnewmembers'])));
 				
-				console.log(val);
+				//console.log(val);
 				
 				jq = $( "<div class='col-xs-3 col-sm-3 col-md-2 col-lg-1 club' id='club_" + val.clubnumber + "'>" +
 					"<span class=clubname>" 	+ val.clubname 		+ "</span>" +
@@ -461,8 +461,8 @@
 		pc = window.clubinfo[0] / subtotal * 100;
 		$("#goalsbar_" + 0).css('width', (parseInt( (window.clubinfo[0] / subtotal * 100) *10)/10 + (100-rt)) + '%');
 
-		change_sort('', '')
-		change_group('');
+		change_sort();
+		change_group();
 
 		});;
 
@@ -475,218 +475,214 @@
 
 		function display_by_area()
 		{
-		if( $("#contentarea div.byarea").length > 0)
-		{
-		return;
-		}
+			if( $("#contentarea div.byarea").length > 0)
+			{
+				return;
+			}
 
-		$("div.club").each(function(index) {
-
-		division = $(this).attr('data-division');
-		area = $(this).attr('data-area');
-
-		da = division + '_' + area;
-		if( $("#contentarea div.byarea#" + da).length > 0)
-		{
-		$(this).detach().appendTo(  $("#contentarea div.byarea#" + da) );
-		}
-		else
-		{
-		$("#contentarea").append( $("<div class='byarea row' id='" + da + "'><span class='pos'><span class='division'>Division " + division +"</span><span class='area'>Area " + area + "</span></span></div>" ));
-		$(this).detach();
-		$("#contentarea div.byarea#" + da).append($(this));
-		}
-		});
-
-		$("div.byarea").sort(function(a,b){
-		an = $(a).attr('id');
-		bn = $(b).attr('id');
-		return an.localeCompare(bn);
-
-		}).each(function(index){
-		p = $(this).parent();
-		$(this).detach().appendTo(p);
-		});
+			$("div.club").each(function(index) {
+				division = $(this).attr('data-division');
+				area = $(this).attr('data-area');
+		
+				da = division + '_' + area;
+				if( $("#contentarea div.byarea#" + da).length > 0)
+				{
+					$(this).detach().appendTo(  $("#contentarea div.byarea#" + da) );
+				}
+				else
+				{
+					$("#contentarea").append( $("<div class='byarea row' id='" + da + "'><span class='pos'><span class='division'>Division " + division +"</span><span class='area'>Area " + area + "</span></span></div>" ));
+					$(this).detach();
+					$("#contentarea div.byarea#" + da).append($(this));
+				}
+			});
+	
+			$("div.byarea").sort(function(a,b){
+				an = $(a).attr('id');
+				bn = $(b).attr('id');
+				return an.localeCompare(bn);	
+			}).each(function(index){
+				p = $(this).parent();
+				$(this).detach().appendTo(p);
+			});
+			
 		}
 
 		function display_by_dcp()
 		{
-		if( $("#contentarea div.bydcp").length > 0)
-		{
-		return;
-		}
+			if( $("#contentarea div.bydcp").length > 0)
+			{
+				return;
+			}
 
-		$("div.club").each(function(index) {
+			$("div.club").each(function(index) {
+				goals = $(this).attr('data-goalsmet');
+		
+				if( $("#contentarea div.bydcp#bydcp_" + goals).length > 0)
+				{
+					$(this).detach().appendTo(  $("#contentarea div.bydcp#bydcp_" + goals) );
+				}
+				else
+				{
+					$("#contentarea").append( $("<div class='bydcp row' id='bydcp_" + goals + "' data-dcp='" + goals + "'><span class='pos'><span class='goals'>Goals " + goals +"</span></span></div>" ));
+					$(this).detach().appendTo(  $("#contentarea div.bydcp#bydcp_" + goals) );
+				}
+			});
 
-		goals = $(this).attr('data-goalsmet');
-
-		if( $("#contentarea div.bydcp#bydcp_" + goals).length > 0)
-		{
-		$(this).detach().appendTo(  $("#contentarea div.bydcp#bydcp_" + goals) );
-		}
-		else
-		{
-		$("#contentarea").append( $("<div class='bydcp row' id='bydcp_" + goals + "' data-dcp='" + goals + "'><span class='pos'><span class='goals'>Goals " + goals +"</span></span></div>" ));
-		$(this).detach().appendTo(  $("#contentarea div.bydcp#bydcp_" + goals) );
-		}
-
-		});
-
-		$("div.bydcp").sort(function(a,b){
-		an = Math.trunc( $(a).attr('data-dcp') );
-		bn = Math.trunc( $(b).attr('data-dcp') );
-
-		dir = -1;
-
-		if(an > bn) { return dir; }
-		if(an < bn) { return -1 * dir; }
-		return 0;
-
-		}).each(function(index){
-		p = $(this).parent();
-		$(this).detach().appendTo(p);
-		});
+			$("div.bydcp").sort(function(a,b){
+				an = Math.trunc( $(a).attr('data-dcp') );
+				bn = Math.trunc( $(b).attr('data-dcp') );
+		
+				dir = -1;
+		
+				if(an > bn) { return dir; }
+				if(an < bn) { return -1 * dir; }
+				return 0;
+			}).each(function(index){
+				p = $(this).parent();
+				$(this).detach().appendTo(p);
+			});
 		}
 
 		function display_by_none()
 		{
-		$("div.club").each(function(){
-		ca = $("#contentarea");
-		$(this).detach().appendTo(ca);
-		});
+			$("div.club").each(function(){
+				ca = $("#contentarea");
+				$(this).detach().appendTo(ca);
+				});
 
-		$("div.bycoach").remove();
-		$("div.byarea").remove();
-		$("div.bydcp").remove();
-
+			$("div.bycoach").remove();
+			$("div.byarea").remove();
+			$("div.bydcp").remove();
 		}
 
-		function change_group(grouptype)
+		/* Change the current grouping. Explicitly if supplied, otherwise infer from HTML, otherwise assume default */
+		function change_group(grouptype=null)
 		{
-		console.log('change_group(' + grouptype + ')');
+			console.log('change_group(' + grouptype + ')');
 
-		if(grouptype == '')
+		if(grouptype == '' || grouptype == null)
 		{
-		grouptype = $("#GroupDisplay").data('grouptype');
+			grouptype = $("#GroupDisplay").data('grouptype');
 		}
 		if(grouptype == ''  || typeof grouptype == 'undefined')
 		{
-		grouptype = 'none';
+			grouptype = 'none';
 		}
 
 		if(grouptype == "none")
 		{
-		display_by_none();
-		$("#GroupDisplay")
-		.html("Grouping Disabled " + '<span class="caret"></span>')
-		.data('grouptype', grouptype);
-		change_sort('', '');
+			display_by_none();
+			$("#GroupDisplay")
+			.html("Grouping Disabled " + '<span class="caret"></span>')
+			.data('grouptype', grouptype);
+			change_sort();
 		}
 		if(grouptype == "coach")
 		{
-		display_by_none();
-		display_by_coach();
-		$("#GroupDisplay")
-		.html("Grouping By Coaching Status " + '<span class="caret"></span>')
-		.data('grouptype', grouptype);
-		change_sort('', '');
+			display_by_none();
+			display_by_coach();
+			$("#GroupDisplay")
+			.html("Grouping By Coaching Status " + '<span class="caret"></span>')
+			.data('grouptype', grouptype);
+			change_sort();
 		}
 
 		if(grouptype == "area")
 		{
-		display_by_none();
-		display_by_area();
-		$("#GroupDisplay")
-		.html("Grouping By Area " + '<span class="caret"></span>')
-		.data('grouptype', grouptype);
-		change_sort('', '');
+			display_by_none();
+			display_by_area();
+			$("#GroupDisplay")
+			.html("Grouping By Area " + '<span class="caret"></span>')
+			.data('grouptype', grouptype);
+			change_sort();
 		}
 		if(grouptype == "dcp")
 		{
-		display_by_none();
-		display_by_dcp();
-		$("#GroupDisplay")
-		.html("Grouping By DCP " + '<span class="caret"></span>')
-		.data('grouptype', grouptype);
-		change_sort('', '');
+			display_by_none();
+			display_by_dcp();
+			$("#GroupDisplay")
+			.html("Grouping By DCP " + '<span class="caret"></span>')
+			.data('grouptype', grouptype);
+			change_sort();
 		}
 
 		}
 
-		function change_sort(sorttype, sortdir)
+		/* Change the current sort type and direction. Explicitly if supplied, otherwise infer from HTML, otherwise assume defaults */
+		function change_sort(sorttype=null, sortdir=null)
 		{
-		console.log('change_sort(' + sorttype + ', ' + sortdir + ')');
+		//console.log('change_sort(' + sorttype + ', ' + sortdir + ')');
 
-		if(sorttype == '')
+		if(sorttype == '' || sorttype == null)
 		{
-		sorttype = $("#SortDisplay").data('sorttype');
+			sorttype = $("#SortDisplay").data('sorttype');
 		}
 		if(sorttype == '' || typeof sorttype == 'undefined')
 		{
-		sorttype = 'dcpgoals';
+			sorttype = 'dcpgoals';
 		}
 
-		if(sortdir == '')
+		if(sortdir == '' || sortdir == null)
 		{
-		sortdir = $("#SortDisplay").data('sortdir');
+			sortdir = $("#SortDisplay").data('sortdir');
 		}
 		if(sortdir == '' || typeof sortdir == 'undefined')
 		{
-		sortdir = -1;
+			sortdir = -1;
 		}
 
 		console.log('inferred sorttype=' + sorttype + ' and sortdir=' + sortdir);
 
 		if(sorttype == "clubnumber")
 		{
-		sort_by_clubnumber(sortdir);
-		$("#SortDisplay")
-		.html("Sorting by Club Number (" + (sortdir == 1 ? 'asc' : 'desc') + ")" + '<span class="caret"></span>')
-		.data('sorttype', sorttype)
-		.data('sortdir', sortdir);
+			sort_by_clubnumber(sortdir);
+			$("#SortDisplay")
+			.html("Sorting by Club Number (" + (sortdir == 1 ? 'asc' : 'desc') + ")" + '<span class="caret"></span>')
+			.data('sorttype', sorttype)
+			.data('sortdir', sortdir);
 		}
 		if(sorttype == "membership")
 		{
-		sort_by_membership(sortdir);
-		$("#SortDisplay")
-		.html("Sorting by Current Membership (" + (sortdir == 1 ? 'asc' : 'desc') + ")" + '<span class="caret"></span>')
-		.data('sorttype', sorttype)
-		.data('sortdir', sortdir);
+			sort_by_membership(sortdir);
+			$("#SortDisplay")
+			.html("Sorting by Current Membership (" + (sortdir == 1 ? 'asc' : 'desc') + ")" + '<span class="caret"></span>')
+			.data('sorttype', sorttype)
+			.data('sortdir', sortdir);
 		}
 		if(sorttype == "dcpgoals")
 		{
-		sort_by_clubgoals(sortdir);
-		$("#SortDisplay")
-		.html("Sorting by Current DCP (" + (sortdir == 1 ? 'asc' : 'desc') + ")" + '<span class="caret"></span>')
-		.data('sorttype', sorttype)
-		.data('sortdir', sortdir);
+			sort_by_clubgoals(sortdir);
+			$("#SortDisplay")
+			.html("Sorting by Current DCP (" + (sortdir == 1 ? 'asc' : 'desc') + ")" + '<span class="caret"></span>')
+			.data('sorttype', sorttype)
+			.data('sortdir', sortdir);
 		}
 		if(sorttype == "dcpmembership")
 		{
-		sort_by_dcpmembership(sortdir);
-		$("#SortDisplay")
-		.html("Sorting by Required Membership For DCP (" + (sortdir == 1 ? 'asc' : 'desc') + ")" + '<span class="caret"></span>')
-		.data('sorttype', sorttype)
-		.data('sortdir', sortdir);
+			sort_by_dcpmembership(sortdir);
+			$("#SortDisplay")
+			.html("Sorting by Required Membership For DCP (" + (sortdir == 1 ? 'asc' : 'desc') + ")" + '<span class="caret"></span>')
+			.data('sorttype', sorttype)
+			.data('sortdir', sortdir);
 		}
 
 		}
 
 		function sort_by_clubnumber(dir)
 		{
-		dir = dir || 1;
-		$("div.club").sort(function(a,b){
-		an = Math.trunc( $(a).attr('data-clubnumber') );
-		bn = Math.trunc( $(b).attr('data-clubnumber') );
-
-		if(an > bn) { return dir; }
-		if(an < bn) { return -1 * dir; }
-		return 0;
-		}).each(function(index){
-		p = $(this).parent();
-		$(this).detach().appendTo(p);
-		});
-
+			dir = dir || 1;
+			$("div.club").sort(function(a,b){
+				an = Math.trunc( $(a).attr('data-clubnumber') );
+				bn = Math.trunc( $(b).attr('data-clubnumber') );
+		
+				if(an > bn) { return dir; }
+				if(an < bn) { return -1 * dir; }
+					return 0;
+			}).each(function(index){
+					p = $(this).parent();
+					$(this).detach().appendTo(p);
+			});
 		}
 
 		function sort_by_dcpmembership(dir)
