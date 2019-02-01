@@ -3,7 +3,7 @@
 <head>	
 	
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/cupertino/jquery-ui.css">
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 	
 	<style type="text/css">
 		.club {
@@ -854,8 +854,8 @@
 
 		function fx(num,precision)
 		{
-		if(!precision) { precision = 10; }
-		return Math.round((num)*precision)/precision;
+			if(!precision) { precision = 10; }
+			return Math.round((num)*precision)/precision;
 		}
 
 		$(document).uitooltip({
@@ -865,37 +865,37 @@
 		if(e.hasClass('club'))
 		{
 
-		out = '<table>';
-		out += '<tr><td colspan=2><b><u>' + e.attr('data-clubname') + '</u></b></td></tr>';
-		out += '<tr><th>Club Number</th><td>' + e.attr('data-clubnumber') + '</td></tr>';
-		out += '<tr><th>Area</th><td>' + e.attr('data-area') + '</td></tr>';
-		out += '<tr><th>Division</th><td>' + e.attr('data-division') + '</td></tr>';
-		out += '<tr><th>District</th><td>' + e.attr('data-district') + '</td></tr>';
-		out += '<tr><th>Membership Base</th><td>' + e.attr('data-membase') + '</td></tr>';
-		out += '<tr><th>Membership Required</th><td>' + e.attr('data-membershiprequired') + '</td></tr>';
-		out += '<tr><th>Membership To Date</th><td>' + e.attr('data-activemembers') + '</td></tr>';
-		out += '<tr><th>Current DCP Goals</th><td>' + e.attr('data-goalsmet') + '</td></tr>';
-		out += '<tr><th>YTD membership retention</th><td>' + Math.floor(e.attr('data-retention')*100) + '%</td></tr>';
-		out += '<tr><th>LEO says</th><td>' + e.attr('data-advice') + '</td></tr>';
-		out += '<tr><th>Current Status</th><td>';
-
-		good = '<td style="background-color:#00ff00; border: solid black 1px; text-align: center;" width="10%">';
-		ok = '<td style="background-color:#ffff00; border: solid black 1px; text-align: center;" width="10%">';
-		bad = '<td style="background-color:#ff0000; border: solid black 1px; text-align: center;" width="10%">';
-
-		t = '<table width=100%><tr>' +
-		( e.attr('data-ccs') >= 2 ? good : e.attr('data-ccs') == 1 ? ok : bad ) + e.attr('data-ccs') + '</td>' +
-		( e.attr('data-addccs') >= 2 ? good : e.attr('data-addccs') == 1 ? ok : bad ) + e.attr('data-addccs') + '</td>' +
-		( e.attr('data-acs') >= 1 ? good : bad ) + e.attr('data-acs') + '</td>' +
-			( e.attr('data-addacs') >= 1 ? good : bad ) + e.attr('data-addacs') + '</td>' +
-			( e.attr('data-claldtms') >= 1 ? good : bad ) + e.attr('data-claldtms') + '</td>' +
-			( e.attr('data-addclaldtms') >= 1 ? good : bad ) + e.attr('data-addclaldtms') + '</td>' +
-			( e.attr('data-newmembers') >= 4 ? good : e.attr('data-newmembers') >= 2 ? ok : bad ) + e.attr('data-newmembers') + '</td>' +
-			( e.attr('data-addnewmembers') >= 4 ? good : e.attr('data-addnewmembers') >= 2 ? ok : bad ) + e.attr('data-addnewmembers') + '</td>' +
-			( e.attr('data-offtrainedround1') >= 4 && e.attr('data-offtrainedround2') >= 4 ? good : e.attr('data-offtrainedround1') >= 4 || e.attr('data-offtrainedround2') >= 4 ? ok : bad ) + e.attr('data-offtrainedround1') + '/' + e.attr('data-offtrainedround2') + '</td>' +
-			( e.attr('data-memduesontimeoct') >= 1 && e.attr('data-memduesontimeapr') >= 1 ? good : e.attr('data-memduesontimeoct') >= 1 || e.attr('data-memduesontimeapr') >= 1 ? ok : bad ) + e.attr('data-memduesontimeoct') + '/' + e.attr('data-memduesontimeapr') + '</td>' +
-			'</tr></table>';
-
+			out = '<table>';
+			out += '<tr><td colspan=2><b><u>' + e.attr('data-clubname') + '</u></b></td></tr>';
+			out += '<tr><th>Club Number</th><td>' + e.attr('data-clubnumber') + '</td></tr>';
+			out += '<tr><th>Area</th><td>' + e.attr('data-area') + '</td></tr>';
+			out += '<tr><th>Division</th><td>' + e.attr('data-division') + '</td></tr>';
+			out += '<tr><th>District</th><td>' + e.attr('data-district') + '</td></tr>';
+			out += '<tr><th>Membership Base</th><td>' + e.attr('data-membase') + '</td></tr>';
+			out += '<tr><th>Membership Required</th><td>' + e.attr('data-membershiprequired') + '</td></tr>';
+			out += '<tr><th>Membership To Date</th><td>' + e.attr('data-activemembers') + '</td></tr>';
+			out += '<tr><th>Current DCP Goals</th><td>' + e.attr('data-goalsmet') + '</td></tr>';
+			out += '<tr><th>YTD membership retention</th><td>' + Math.floor(e.attr('data-retention')*100) + '%</td></tr>';
+			out += '<tr><th>LEO says</th><td>' + e.attr('data-advice') + '</td></tr>';
+			out += '<tr><th>Current Status</th><td>';
+	
+			good = '<td style="background-color:#00ff00; border: solid black 1px; text-align: center;" width="10%">';
+			ok = '<td style="background-color:#ffff00; border: solid black 1px; text-align: center;" width="10%">';
+			bad = '<td style="background-color:#ff0000; border: solid black 1px; text-align: center;" width="10%">';
+	
+			t = '<table width=100%><tr>' +
+				( e.attr('data-ccs') >= 2 ? good : e.attr('data-ccs') == 1 ? ok : bad ) + e.attr('data-ccs') + '</td>' +
+				( e.attr('data-addccs') >= 2 ? good : e.attr('data-addccs') == 1 ? ok : bad ) + e.attr('data-addccs') + '</td>' +
+				( e.attr('data-acs') >= 1 ? good : bad ) + e.attr('data-acs') + '</td>' +
+				( e.attr('data-addacs') >= 1 ? good : bad ) + e.attr('data-addacs') + '</td>' +
+				( e.attr('data-claldtms') >= 1 ? good : bad ) + e.attr('data-claldtms') + '</td>' +
+				( e.attr('data-addclaldtms') >= 1 ? good : bad ) + e.attr('data-addclaldtms') + '</td>' +
+				( e.attr('data-newmembers') >= 4 ? good : e.attr('data-newmembers') >= 2 ? ok : bad ) + e.attr('data-newmembers') + '</td>' +
+				( e.attr('data-addnewmembers') >= 4 ? good : e.attr('data-addnewmembers') >= 2 ? ok : bad ) + e.attr('data-addnewmembers') + '</td>' +
+				( e.attr('data-offtrainedround1') >= 4 && e.attr('data-offtrainedround2') >= 4 ? good : e.attr('data-offtrainedround1') >= 4 || e.attr('data-offtrainedround2') >= 4 ? ok : bad ) + e.attr('data-offtrainedround1') + '/' + e.attr('data-offtrainedround2') + '</td>' +
+				( e.attr('data-memduesontimeoct') >= 1 && e.attr('data-memduesontimeapr') >= 1 ? good : e.attr('data-memduesontimeoct') >= 1 || e.attr('data-memduesontimeapr') >= 1 ? ok : bad ) + e.attr('data-memduesontimeoct') + '/' + e.attr('data-memduesontimeapr') + '</td>' +
+				'</tr></table>';
+	
 			out += t;
 			out += '</td></tr>';
 			out += '</table>';
@@ -905,40 +905,40 @@
 			}
 			else if(e.hasClass('districtrow'))
 			{
-			tc = $("div.club").length;
-			out = '<h3>Of all clubs in District - total ' + tc + '</h3>';
-
-			need_members = $("div.club[data-membershipneeded^=\"-\"]").length;
-			out += need_members + ' (' + pt(need_members/tc)+ ') of these clubs are not meeting the membership requirement.<br>';
-
-			membership_total = 0;
-			$("div.club").each(function(){
-			membership_total += parseInt( $(this).attr('data-activemembers') );
-			});
-			out += fx(membership_total/tc) + ' members on average<br>';
-
-			return out;
+				tc = $("div.club").length;
+				out = '<h3>Of all clubs in District - total ' + tc + '</h3>';
+	
+				need_members = $("div.club[data-membershipneeded^=\"-\"]").length;
+				out += need_members + ' (' + pt(need_members/tc)+ ') of these clubs are not meeting the membership requirement.<br>';
+	
+				membership_total = 0;
+				$("div.club").each(function(){
+					membership_total += parseInt( $(this).attr('data-activemembers') );
+				});
+				out += fx(membership_total/tc) + ' members on average<br>';
+	
+				return out;
 
 			}
 			else
 			{
-			gc = parseInt( e.attr('data-goalsmet') );
-
-			tc = $("div.club").length;
-			mc = $("div.club[data-goalsmet=" + gc + "]").length;
-
-			out = '<h3>Clubs with ' + gc + ' DCP ' + (gc == 1 ? 'goal' : 'goals')  + ' ' + mc + '/' + tc + ' (' + pt(mc/tc) + ')</h3>';
-
-			need_members = $("div.club[data-goalsmet=" + gc + "][data-membershipneeded^=\"-\"]").length;
-			out += need_members + ' (' + pt(need_members/mc)+ ') of these clubs are not meeting the membership requirement.<br>';
-
-			membership_total = 0;
-			$("div.club[data-goalsmet=" + gc + "]").each(function(){
-			membership_total += parseInt( $(this).attr('data-activemembers') );
-			});
-			out += fx(membership_total/mc) + ' members on average<br>';
-
-			return out;
+				gc = parseInt( e.attr('data-goalsmet') );
+	
+				tc = $("div.club").length;
+				mc = $("div.club[data-goalsmet=" + gc + "]").length;
+	
+				out = '<h3>Clubs with ' + gc + ' DCP ' + (gc == 1 ? 'goal' : 'goals')  + ' ' + mc + '/' + tc + ' (' + pt(mc/tc) + ')</h3>';
+	
+				need_members = $("div.club[data-goalsmet=" + gc + "][data-membershipneeded^=\"-\"]").length;
+				out += need_members + ' (' + pt(need_members/mc)+ ') of these clubs are not meeting the membership requirement.<br>';
+	
+				membership_total = 0;
+				$("div.club[data-goalsmet=" + gc + "]").each(function(){
+					membership_total += parseInt( $(this).attr('data-activemembers') );
+				});
+				out += fx(membership_total/mc) + ' members on average<br>';
+	
+				return out;
 			}
 
 			}
