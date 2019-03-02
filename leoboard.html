@@ -894,6 +894,18 @@
 				( e.attr('data-addnewmembers') >= 4 ? good : e.attr('data-addnewmembers') >= 2 ? ok : bad ) + e.attr('data-addnewmembers') + '</td>' +
 				( e.attr('data-offtrainedround1') >= 4 && e.attr('data-offtrainedround2') >= 4 ? good : e.attr('data-offtrainedround1') >= 4 || e.attr('data-offtrainedround2') >= 4 ? ok : bad ) + e.attr('data-offtrainedround1') + '/' + e.attr('data-offtrainedround2') + '</td>' +
 				( e.attr('data-memduesontimeoct') >= 1 && e.attr('data-memduesontimeapr') >= 1 ? good : e.attr('data-memduesontimeoct') >= 1 || e.attr('data-memduesontimeapr') >= 1 ? ok : bad ) + e.attr('data-memduesontimeoct') + '/' + e.attr('data-memduesontimeapr') + '</td>' +
+				'</tr><tr>' +
+				( e.attr('data-level1s') >= 4 ? good : e.attr('data-ccs') == 1 ? ok : bad ) + e.attr('data-ccs') + '</td>' +
+				( e.attr('data-level2s') >= 2 ? good : e.attr('data-addccs') == 1 ? ok : bad ) + e.attr('data-addccs') + '</td>' +
+				( e.attr('data-addlevel2s') >= 2 ? good : bad ) + e.attr('data-acs') + '</td>' +
+				( e.attr('data-level3s') >= 2 ? good : bad ) + e.attr('data-addacs') + '</td>' +
+				( e.attr('data-level4s') >= 1 ? good : bad ) + e.attr('data-claldtms') + '</td>' +
+				( e.attr('data-level5s') >= 1 ? good : bad ) + e.attr('data-addclaldtms') + '</td>' +
+				( e.attr('data-newmembers') >= 4 ? good : e.attr('data-newmembers') >= 2 ? ok : bad ) + e.attr('data-newmembers') + '</td>' +
+				( e.attr('data-addnewmembers') >= 4 ? good : e.attr('data-addnewmembers') >= 2 ? ok : bad ) + e.attr('data-addnewmembers') + '</td>' +
+				( e.attr('data-offtrainedround1') >= 4 && e.attr('data-offtrainedround2') >= 4 ? good : e.attr('data-offtrainedround1') >= 4 || e.attr('data-offtrainedround2') >= 4 ? ok : bad ) + e.attr('data-offtrainedround1') + '/' + e.attr('data-offtrainedround2') + '</td>' +
+				( e.attr('data-memduesontimeoct') >= 1 && e.attr('data-memduesontimeapr') >= 1 ? good : e.attr('data-memduesontimeoct') >= 1 || e.attr('data-memduesontimeapr') >= 1 ? ok : bad ) + e.attr('data-memduesontimeoct') + '/' + e.attr('data-memduesontimeapr') + '</td>' +
+				
 				'</tr></table>';
 	
 			out += t;
