@@ -194,7 +194,7 @@
 							<a href="javascript:change_sort('dcpmembership', -1)">By Required Membership For DCP</a>
 						</li>
 						<li>
-							<a href="javascript:change_sort('dcpgoals', -1)">By Current DCP</a>
+							<a href="javascript:change_sort('dcpgoals', -1)">By Current DCP (default)</a>
 						</li>
 					</ul>
 				</li>
@@ -218,13 +218,13 @@
 			
 			<ul class="nav navbar-nav">
 				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="GroupDisplay">Render <span class="caret"></span></a>
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="RenderDisplay">Render (Change Your Colours)<span class="caret"></span></a>
 					<ul class="dropdown-menu">
 						<li>
-							<a href="javascript:change_rendermode('default')">CYC (default)</a>
+							<a href="javascript:change_rendermode('default')">Change Your Colours (default)</a>
 						</li>
 						<li>
-							<a href="javascript:change_rendermode('member')">Membership (beta)</a>
+							<a href="javascript:change_rendermode('member')">Membership</a>
 						</li>
 					</ul>
 				</li>
@@ -500,6 +500,10 @@
 			
 			if( rm == "default" )
 			{
+				$("#RenderDisplay")
+				.html("Render (Change Your Colours) " + '<span class="caret"></span>')
+				.data('rendertype', rm);				
+				
 				window.clubinfo = Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 				$("div.club").each(function(index){
 					gm = $(this).attr('data-goalsmet');
@@ -532,6 +536,10 @@
 			
 			if( rm == "member" )
 			{
+				$("#RenderDisplay")
+				.html("Render (Membership) " + '<span class="caret"></span>')
+				.data('rendertype', rm);
+				
 				window.clubinfo = Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);				
 				$("div.club").each(function(index){
 					gm = $(this).attr('data-goalsmet');
