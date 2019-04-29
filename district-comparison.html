@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>	
+	
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	
+	<style type="text/css">
+	
+	</style>
+	
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
+	<script src="https://code.pachogrande.com/jqueryui-bootstrap-bridge.js"></script>
+	
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	
+	<script src="js/leotools-common.js"></script>
+		
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<title>Toastmasters District Comparison</title>
+	
+</head>
+<body>
+
+<div id=contentarea class="container-fluid">	
+	
+</div>
+
+<script>
+	
+		var LT = new Leotools();
+		var urls = {
+			"2018-2019"   : LT.current_district_summary_url(),
+			"2017-2018" : "http://dashboards.toastmasters.org/2017-2018/export.aspx?type=CSV&report=districtsummary~6/30/2018~~2017-2018",
+			"2016-2017" : "http://dashboards.toastmasters.org/2016-2017/export.aspx?type=CSV&report=districtsummary~6/30/2017~~2016-2017",
+			"2015-2016" : "http://dashboards.toastmasters.org/2015-2016/export.aspx?type=CSV&report=districtsummary~6/30/2016~~2015-2016",
+			"2014-2015" : "http://dashboards.toastmasters.org/2014-2015/export.aspx?type=CSV&report=districtsummary~6/30/2015~~2014-2015",
+			"2013-2014" : "http://dashboards.toastmasters.org/2013-2014/export.aspx?type=CSV&report=districtsummary~6/30/2014~~2013-2014",
+			"2012-2013" : "http://dashboards.toastmasters.org/2012-2013/export.aspx?type=CSV&report=districtsummary~6/30/2013~~2012-2013",
+			"2011-2012" : "http://dashboards.toastmasters.org/2011-2012/export.aspx?type=CSV&report=districtsummary~6/30/2012~~2011-2012",
+			"2010-2011" : "http://dashboards.toastmasters.org/2010-2011/export.aspx?type=CSV&report=districtsummary~6/30/2011~~2010-2011",
+			"2009-2010" : "http://dashboards.toastmasters.org/2009-2010/export.aspx?type=CSV&report=districtsummary~6/30/2010~~2009-2010",
+			"2008-2009" : "http://dashboards.toastmasters.org/2008-2009/export.aspx?type=CSV&report=districtsummary~6/30/2009~~2008-2009",		
+		};
+		var years = ["2018-2019", "2017-2018", "2016-2017", "2015-2016", "2014-2015", "2013-2014", "2012-2013", "2011-2012", "2010-2011", "2009-2010", "2008-2009"];
+		window.years = years;
+
+		for(i=0; i<years.length; i++)
+		{
+			year = years[i];
+			proxy_url = LT.cors_proxy + urls[ year ];
+			console.log("setting year=" + year + " with url=" + proxy_url);
+			
+			$.ajax({
+			  url: proxy_url,
+			  method: "GET",
+			  dataType: "html",
+			  success: function(res) {
+			  	// Extract the year from the URL as we can't rely on the variables asynchronously 			  	
+			  	year = this.url;
+			  	year = year.substring( year.length - 9, year.length );
+
+			  	console.log("Successful pull of " + year + " via AJAX");
+			  	
+			  	jsonArray = jQuery.parseJSON(res);
+			  	
+			  	columns = jsonArray[0];
+			  	coldefs = [];
+			  	for(i=0; i<columns.length; i++)
+			  	{
+			  		baseStr = columns[i];
+			  		baseStr = baseStr.replace(/[.@#$%\^&*=_+"'\/<>\\\|{}\[\]]/g,"");
+					baseStr = baseStr.replace(/[\t ]+/g,'');
+	        		baseStr = baseStr.replace(/\n{1,}/g,'');
+	        		baseStr = baseStr.toLowerCase();
+	        		
+	        		// console.log(baseStr);		  				  		
+			  		columns[i] = baseStr;
+			  		
+			  	}
+			  	
+			  	// Shift the header row from the data
+				jsonArray.shift();
+				
+				// The last two rows indicate when the information was pulled, pop them out of the way before rendering
+				jsonArray.pop();
+			  	jsonArray.pop();
+			  				  	
+				console.log('data has ' + jsonArray.length + ' items in it');
+		
+				$.each( jsonArray, function( key, v ) {
+	
+					if(!window.districts)
+					{
+						window.districts = {};
+					}
+						
+					if(window.districts[ v[1] ])
+					{
+						window.districts[v[1]][year] = v;
+					}
+					else
+					{
+						window.districts[ v[1] ] = Array();
+						window.districts[v[1]][year] = v;
+					}									
+			 	}); // $.each
+			 }
+			});								
+		}
+		
+		$(document).ajaxStop(function() {
+			for(district in window.districts)
+			{
+				// 00 => "region"
+				// 01 => "district"
+				// 02 => "dsp"
+				// 03 => "training"
+				// 04 => "membership_payments_new"
+				// 05 => "membership_payments_april"
+				// 06 => "membership_payments_october"
+				// 07 => "membership_payments_late"
+				// 08 => "membership_payments_charter"
+				// 09 => "membership_payments_ytd"
+				// 10 => "membership_payments_base"
+				// 11 => "membership_payments_growth_percent"
+				// 13 => "paidclub_base"
+				// 13 => "paidclub_ytd"
+				// 14 => "paidclub_growth_percent"
+				// 15 => "active_clubs"
+				// 16 => "distinguished_clubs"
+				// 17 => "distinguished_clubs_select"
+				// 18 => "distinguished_clubs_president"
+				// 19 => "distinguished_clubs_total"
+				// 20 => "distinguished_clubs_percent"
+									
+				$( "#contentarea" ).append("<div class=row id=district_" + district + ">" + 
+					'<div class="col-xs-1">District ' + district + '</div>' +
+					'<div class="col-xs-1" id="' + (district+"_"+"2018-2019") + '">' + "" + '</div>' +
+					'<div class="col-xs-1" id="' + (district+"_"+"2017-2018") + '">' + "" + '</div>' +
+					'<div class="col-xs-1" id="' + (district+"_"+"2016-2017") + '">' + "" + '</div>' +
+					'<div class="col-xs-1" id="' + (district+"_"+"2015-2016") + '">' + "" + '</div>' +
+					'<div class="col-xs-1" id="' + (district+"_"+"2014-2015") + '">' + "" + '</div>' +
+					'<div class="col-xs-1" id="' + (district+"_"+"2013-2014") + '">' + "" + '</div>' +
+					'<div class="col-xs-1" id="' + (district+"_"+"2012-2013") + '">' + "" + '</div>' +
+					'<div class="col-xs-1" id="' + (district+"_"+"2011-2012") + '">' + "" + '</div>' +
+					'<div class="col-xs-1" id="' + (district+"_"+"2010-2011") + '">' + "" + '</div>' +
+					'<div class="col-xs-1" id="' + (district+"_"+"2009-2010") + '">' + "" + '</div>' +
+					'<div class="col-xs-1" id="' + (district+"_"+"2008-2009") + '">' + "" + '</div>' +
+					"</div>");
+					
+				for( year in window.districts[district])
+				{
+//					console.log(year + ' for ' + district);
+					key = (district + "_" + year);
+					$("#" + key).text(
+						window.districts[district][year][20]
+					);
+					
+				}
+			}
+						
+		});		
+		
+		
+
+
+	
+</script>
+
+</body>
+</html>
