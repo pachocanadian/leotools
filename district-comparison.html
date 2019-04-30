@@ -14,6 +14,25 @@
 			border-top: 1px solid black;
 			border-collapse: collapse;
 		}
+		
+		.smedley {
+			background-color: #00d081;
+		}
+
+		.presidents_distinguished {
+			background-color: #0a1174;
+			color: #ffffff;
+		}
+
+		.select_distinguished {
+			background-color: #ffbc3c;
+		}
+
+		.distinguished {
+			background-color: #1e9f6e;
+		}
+
+		
 	</style>
 	
 	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
@@ -185,7 +204,29 @@
 						window.districts[district][year][20]
 					);
 					
+					$("#" + key).attr('data-distinguished_clubs_percent', parseFloat( window.districts[district][year][20] ));
 				}
+				
+				$( 'td').each(function(key,value) {
+
+					if( $(value).attr('data-distinguished_clubs_percent') >= 55.00 )
+					{
+						$(value).addClass('smedley');
+					}					
+					else if( $(value).attr('data-distinguished_clubs_percent') >= 50.00 )
+					{
+						$(value).addClass('presidents_distinguished');
+					}
+					else if( $(value).attr('data-distinguished_clubs_percent') >= 45.00 )
+					{
+						$(value).addClass('select_distinguished');
+					}
+					else if( $(value).attr('data-distinguished_clubs_percent') >= 40.00 )
+					{
+						$(value).addClass('distinguished');
+					}
+					
+				});
 			}
 						
 		});		
