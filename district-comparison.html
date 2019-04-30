@@ -6,7 +6,14 @@
 	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 	
 	<style type="text/css">
+		#contentarea CAPTION {
+			text-align: center;
+		}
 	
+		#contentarea TR {
+			border-top: 1px solid black;
+			border-collapse: collapse;
+		}
 	</style>
 	
 	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
@@ -25,9 +32,9 @@
 </head>
 <body>
 
-<div id=contentarea class="container-fluid">	
+<table id=contentarea class="">
 	
-</div>
+</table>
 
 <script>
 	
@@ -113,6 +120,24 @@
 		}
 		
 		$(document).ajaxStop(function() {
+			$( "#contentarea" ).append("<caption>District Distinguished Club %</caption>");
+			
+			$( "#contentarea" ).append("<thead><tr id=th_header>" + 
+					'<th class="col-xs-1">District' + '</th>' +
+					'<th class="col-xs-1" id="th_2018-2019">' + "2018-2019" + '</th>' +
+					'<th class="col-xs-1" id="th_2017-2018">' + "2017-2018" + '</th>' +
+					'<th class="col-xs-1" id="th_2016-2017">' + "2016-2017" + '</th>' +
+					'<th class="col-xs-1" id="th_2015-2016">' + "2015-2016" + '</th>' +
+					'<th class="col-xs-1" id="th_2014-2015">' + "2014-2015" + '</th>' +
+					'<th class="col-xs-1" id="th_2013-2014">' + "2013-2014" + '</th>' +
+					'<th class="col-xs-1" id="th_2012-2013">' + "2012-2013" + '</th>' +
+					'<th class="col-xs-1" id="th_2011-2012">' + "2011-2012" + '</th>' +
+					'<th class="col-xs-1" id="th_2010-2011">' + "2010-2011" + '</th>' +
+					'<th class="col-xs-1" id="th_2009-2010">' + "2009-2010" + '</th>' +
+					'<th class="col-xs-1" id="th_2008-2009">' + "2008-2009" + '</th>' +
+					"</tr></thead>");
+			
+			
 			for(district in window.districts)
 			{
 				// 00 => "region"
@@ -137,20 +162,20 @@
 				// 19 => "distinguished_clubs_total"
 				// 20 => "distinguished_clubs_percent"
 									
-				$( "#contentarea" ).append("<div class=row id=district_" + district + ">" + 
-					'<div class="col-xs-1">District ' + district + '</div>' +
-					'<div class="col-xs-1" id="' + (district+"_"+"2018-2019") + '">' + "" + '</div>' +
-					'<div class="col-xs-1" id="' + (district+"_"+"2017-2018") + '">' + "" + '</div>' +
-					'<div class="col-xs-1" id="' + (district+"_"+"2016-2017") + '">' + "" + '</div>' +
-					'<div class="col-xs-1" id="' + (district+"_"+"2015-2016") + '">' + "" + '</div>' +
-					'<div class="col-xs-1" id="' + (district+"_"+"2014-2015") + '">' + "" + '</div>' +
-					'<div class="col-xs-1" id="' + (district+"_"+"2013-2014") + '">' + "" + '</div>' +
-					'<div class="col-xs-1" id="' + (district+"_"+"2012-2013") + '">' + "" + '</div>' +
-					'<div class="col-xs-1" id="' + (district+"_"+"2011-2012") + '">' + "" + '</div>' +
-					'<div class="col-xs-1" id="' + (district+"_"+"2010-2011") + '">' + "" + '</div>' +
-					'<div class="col-xs-1" id="' + (district+"_"+"2009-2010") + '">' + "" + '</div>' +
-					'<div class="col-xs-1" id="' + (district+"_"+"2008-2009") + '">' + "" + '</div>' +
-					"</div>");
+				$( "#contentarea" ).append("<tr id=district_" + district + ">" + 
+					'<td class="col-xs-1">District ' + district + '</td>' +
+					'<td class="col-xs-1" id="' + (district+"_"+"2018-2019") + '">' + "" + '</td>' +
+					'<td class="col-xs-1" id="' + (district+"_"+"2017-2018") + '">' + "" + '</td>' +
+					'<td class="col-xs-1" id="' + (district+"_"+"2016-2017") + '">' + "" + '</td>' +
+					'<td class="col-xs-1" id="' + (district+"_"+"2015-2016") + '">' + "" + '</td>' +
+					'<td class="col-xs-1" id="' + (district+"_"+"2014-2015") + '">' + "" + '</td>' +
+					'<td class="col-xs-1" id="' + (district+"_"+"2013-2014") + '">' + "" + '</td>' +
+					'<td class="col-xs-1" id="' + (district+"_"+"2012-2013") + '">' + "" + '</td>' +
+					'<td class="col-xs-1" id="' + (district+"_"+"2011-2012") + '">' + "" + '</td>' +
+					'<td class="col-xs-1" id="' + (district+"_"+"2010-2011") + '">' + "" + '</td>' +
+					'<td class="col-xs-1" id="' + (district+"_"+"2009-2010") + '">' + "" + '</td>' +
+					'<td class="col-xs-1" id="' + (district+"_"+"2008-2009") + '">' + "" + '</td>' +
+					"</tr>");
 					
 				for( year in window.districts[district])
 				{
