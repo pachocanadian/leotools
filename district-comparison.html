@@ -6,30 +6,44 @@
 	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 	
 	<style type="text/css">
+		#contentarea {
+			border: solid black 1px;
+			width: 100%;
+			
+		}
+	
 		#contentarea CAPTION {
 			text-align: center;
 		}
-	
+		
+		#contentarea .legendbox {
+			width: 1em;
+			height: 1em;
+			border: solid black 1px;
+			display: inline-block;
+		}
+		
 		#contentarea TR {
 			border-top: 1px solid black;
 			border-collapse: collapse;
 		}
 		
 		.smedley {
-			background-color: #00d081;
+			background-color: #772432;
+			color: #ffffff;
 		}
 
 		.presidents_distinguished {
-			background-color: #0a1174;
+			background-color: #004165;
 			color: #ffffff;
 		}
 
 		.select_distinguished {
-			background-color: #ffbc3c;
+			background-color: #f2df74;
 		}
 
 		.distinguished {
-			background-color: #1e9f6e;
+			background-color: #a9b2b1;
 		}
 
 		
@@ -139,7 +153,12 @@
 		}
 		
 		$(document).ajaxStop(function() {
-			$( "#contentarea" ).append("<caption>District Distinguished Club %</caption>");
+			$( "#contentarea" ).append("<caption><h1>District Recognition Program</h1>" +
+				"<div class='distinguished legendbox'></div> Distinguished&nbsp;&nbsp;" +
+				"<div class='select_distinguished legendbox'></div> Select Distinguished&nbsp;&nbsp;" +
+				"<div class='presidents_distinguished legendbox'></div> Presidents Distinguished&nbsp;&nbsp;" +
+				"<div class='smedley legendbox'></div> Smedley Distinguished&nbsp;&nbsp;" +
+				"</caption>");
 			
 			$( "#contentarea" ).append("<thead><tr id=th_header>" + 
 					'<th class="col-xs-1">District' + '</th>' +
@@ -156,6 +175,8 @@
 					'<th class="col-xs-1" id="th_2008-2009">' + "2008-2009" + '</th>' +
 					"</tr></thead>");
 			
+			$( "#contentarea" ).append("<tbody>");
+			//console.log(Object.keys(window.districts).sort() );
 			
 			for(district in window.districts)
 			{
@@ -200,34 +221,52 @@
 				{
 //					console.log(year + ' for ' + district);
 					key = (district + "_" + year);
-					$("#" + key).text(
-						window.districts[district][year][20]
+					$("#" + key).html(
+						'MP%' + parseFloat(window.districts[district][year][11]) + '<br>' +
+						'PC%' + parseFloat(window.districts[district][year][14]) + '<br>' +
+						'DC%' + parseFloat(window.districts[district][year][20]) + '<br>'
 					);
 					
+					$("#" + key).attr('data-membership_payments_growth_percent', parseFloat( window.districts[district][year][11] ));
+					$("#" + key).attr('data-paidclub_growth_percent', parseFloat( window.districts[district][year][14] ));					
 					$("#" + key).attr('data-distinguished_clubs_percent', parseFloat( window.districts[district][year][20] ));
 				}
 				
 				$( 'td').each(function(key,value) {
 
-					if( $(value).attr('data-distinguished_clubs_percent') >= 55.00 )
+					if( ($(value).attr('data-membership_payments_growth_percent') >= 8.00) &&
+						($(value).attr('data-paidclub_growth_percent') >= 8.00) &&
+						($(value).attr('data-distinguished_clubs_percent') >= 55.00)												
+					)
 					{
 						$(value).addClass('smedley');
 					}					
-					else if( $(value).attr('data-distinguished_clubs_percent') >= 50.00 )
+					else if( ($(value).attr('data-membership_payments_growth_percent') >= 5.00) &&
+						($(value).attr('data-paidclub_growth_percent') >= 5.00) &&
+						($(value).attr('data-distinguished_clubs_percent') >= 50.00)												
+					)
 					{
 						$(value).addClass('presidents_distinguished');
 					}
-					else if( $(value).attr('data-distinguished_clubs_percent') >= 45.00 )
+					else if( ($(value).attr('data-membership_payments_growth_percent') >= 3.00) &&
+						($(value).attr('data-paidclub_growth_percent') >= 3.00) &&
+						($(value).attr('data-distinguished_clubs_percent') >= 45.00)												
+					)
 					{
 						$(value).addClass('select_distinguished');
 					}
-					else if( $(value).attr('data-distinguished_clubs_percent') >= 40.00 )
+					else if( ($(value).attr('data-membership_payments_growth_percent') >= 1.5) &&
+						($(value).attr('data-paidclub_growth_percent') >= 1.5) &&
+						($(value).attr('data-distinguished_clubs_percent') >= 40.00)												
+					)
 					{
 						$(value).addClass('distinguished');
 					}
 					
-				});
-			}
+				}); //$( 'td').each(function(key,value)
+			} // for(district in window.districts)
+			
+			$( "#contentarea" ).append("</tbody>");
 						
 		});		
 		
