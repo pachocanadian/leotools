@@ -227,37 +227,75 @@
 						'DC%' + parseFloat(window.districts[district][year][20]) + '<br>'
 					);
 					
+					$("#" + key).attr('data-dsp', window.districts[district][year][2] );
+					$("#" + key).attr('data-training', window.districts[district][year][3] );					
 					$("#" + key).attr('data-membership_payments_growth_percent', parseFloat( window.districts[district][year][11] ));
 					$("#" + key).attr('data-paidclub_growth_percent', parseFloat( window.districts[district][year][14] ));					
 					$("#" + key).attr('data-distinguished_clubs_percent', parseFloat( window.districts[district][year][20] ));
+					
+					if( 
+						($("#" + key).attr('data-dsp') == 'Y') &&
+						($("#" + key).attr('data-training') == 'Y') &&
+						($("#" + key).attr('data-membership_payments_growth_percent') >= 8.00) &&
+						($("#" + key).attr('data-paidclub_growth_percent') >= 8.00) &&
+						($("#" + key).attr('data-distinguished_clubs_percent') >= 55.00)												
+					)
+					{
+						$("#" + key).attr('data-distinguished', 'smedley');
+					}					
+					else if( 
+						($("#" + key).attr('data-dsp') == 'Y') &&
+						($("#" + key).attr('data-training') == 'Y') &&
+						($("#" + key).attr('data-membership_payments_growth_percent') >= 5.00) &&
+						($("#" + key).attr('data-paidclub_growth_percent') >= 5.00) &&
+						($("#" + key).attr('data-distinguished_clubs_percent') >= 50.00)												
+					)
+					{
+						$("#" + key).attr('data-distinguished', 'presidents_distinguished');
+					}
+					else if( 
+						($("#" + key).attr('data-dsp') == 'Y') &&
+						($("#" + key).attr('data-training') == 'Y') &&
+						($("#" + key).attr('data-membership_payments_growth_percent') >= 3.00) &&
+						($("#" + key).attr('data-paidclub_growth_percent') >= 3.00) &&
+						($("#" + key).attr('data-distinguished_clubs_percent') >= 45.00)												
+					)
+					{
+						$("#" + key).attr('data-distinguished', 'select_distinguished');
+					}
+					else if( 
+						($("#" + key).attr('data-dsp') == 'Y') &&
+						($("#" + key).attr('data-training') == 'Y') &&
+						($("#" + key).attr('data-membership_payments_growth_percent') >= 1.5) &&
+						($("#" + key).attr('data-paidclub_growth_percent') >= 1.5) &&
+						($("#" + key).attr('data-distinguished_clubs_percent') >= 40.00)												
+					)
+					{
+						$("#" + key).attr('data-distinguished', 'distinguished');
+					}
+					else
+					{
+						$("#" + key).attr('data-distinguished', 'not');
+					}
+					
 				}
 				
 				$( 'td').each(function(key,value) {
 
-					if( ($(value).attr('data-membership_payments_growth_percent') >= 8.00) &&
-						($(value).attr('data-paidclub_growth_percent') >= 8.00) &&
-						($(value).attr('data-distinguished_clubs_percent') >= 55.00)												
-					)
+					if( ($(value).attr('data-distinguished') == 'smedley') )
 					{
 						$(value).addClass('smedley');
 					}					
-					else if( ($(value).attr('data-membership_payments_growth_percent') >= 5.00) &&
-						($(value).attr('data-paidclub_growth_percent') >= 5.00) &&
-						($(value).attr('data-distinguished_clubs_percent') >= 50.00)												
-					)
+					else if( ($(value).attr('data-distinguished') == 'presidents_distinguished') )
 					{
 						$(value).addClass('presidents_distinguished');
 					}
-					else if( ($(value).attr('data-membership_payments_growth_percent') >= 3.00) &&
-						($(value).attr('data-paidclub_growth_percent') >= 3.00) &&
-						($(value).attr('data-distinguished_clubs_percent') >= 45.00)												
+					else if( ($(value).attr('data-distinguished') == 'select_distinguished')												
 					)
 					{
 						$(value).addClass('select_distinguished');
 					}
-					else if( ($(value).attr('data-membership_payments_growth_percent') >= 1.5) &&
-						($(value).attr('data-paidclub_growth_percent') >= 1.5) &&
-						($(value).attr('data-distinguished_clubs_percent') >= 40.00)												
+					else if( ($(value).attr('data-distinguished') == 'distinguished')												
 					)
 					{
 						$(value).addClass('distinguished');
