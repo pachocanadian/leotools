@@ -180,28 +180,6 @@
 			
 			for(district in window.districts)
 			{
-				// 00 => "region"
-				// 01 => "district"
-				// 02 => "dsp"
-				// 03 => "training"
-				// 04 => "membership_payments_new"
-				// 05 => "membership_payments_april"
-				// 06 => "membership_payments_october"
-				// 07 => "membership_payments_late"
-				// 08 => "membership_payments_charter"
-				// 09 => "membership_payments_ytd"
-				// 10 => "membership_payments_base"
-				// 11 => "membership_payments_growth_percent"
-				// 13 => "paidclub_base"
-				// 13 => "paidclub_ytd"
-				// 14 => "paidclub_growth_percent"
-				// 15 => "active_clubs"
-				// 16 => "distinguished_clubs"
-				// 17 => "distinguished_clubs_select"
-				// 18 => "distinguished_clubs_president"
-				// 19 => "distinguished_clubs_total"
-				// 20 => "distinguished_clubs_percent"
-									
 				$( "#contentarea" ).append("<tr id=district_" + district + ">" + 
 					'<td class="col-xs-1">District ' + district + '</td>' +
 					'<td class="col-xs-1" id="' + (district+"_"+"2018-2019") + '">' + "" + '</td>' +
@@ -221,17 +199,56 @@
 				{
 //					console.log(year + ' for ' + district);
 					key = (district + "_" + year);
-					$("#" + key).html(
-						'MP%' + parseFloat(window.districts[district][year][11]) + '<br>' +
-						'PC%' + parseFloat(window.districts[district][year][14]) + '<br>' +
-						'DC%' + parseFloat(window.districts[district][year][20]) + '<br>'
-					);
-					
-					$("#" + key).attr('data-dsp', window.districts[district][year][2] );
-					$("#" + key).attr('data-training', window.districts[district][year][3] );					
+					// 00 => "region"
+					// 01 => "district"
+					// 02 => "dsp"
+					// 03 => "training"
+					// 04 => "membership_payments_new"
+					// 05 => "membership_payments_april"
+					// 06 => "membership_payments_october"
+					// 07 => "membership_payments_late"
+					// 08 => "membership_payments_charter"
+					// 09 => "membership_payments_ytd"
+					// 10 => "membership_payments_base"
+					// 11 => "membership_payments_growth_percent"
+					// 12 => "paidclub_base"
+					// 13 => "paidclub_ytd"
+					// 14 => "paidclub_growth_percent"
+					// 15 => "active_clubs"
+					// 16 => "distinguished_clubs"
+					// 17 => "distinguished_clubs_select"
+					// 18 => "distinguished_clubs_president"
+					// 19 => "distinguished_clubs_total"
+					// 20 => "distinguished_clubs_percent"
+					$("#" + key).attr('data-region', 						window.districts[district][year][0] );
+					$("#" + key).attr('data-district', 						district);
+					$("#" + key).attr('data-year', 							year);
+					$("#" + key).attr('data-dsp', 							window.districts[district][year][2] );
+					$("#" + key).attr('data-training', 						window.districts[district][year][3] );
+					$("#" + key).attr('data-membership_payments_new', 		parseFloat( window.districts[district][year][4] ));
+					$("#" + key).attr('data-membership_payments_april', 	parseFloat( window.districts[district][year][5] ));
+					$("#" + key).attr('data-membership_payments_october', 	parseFloat( window.districts[district][year][6] ));
+					$("#" + key).attr('data-membership_payments_late', 		parseFloat( window.districts[district][year][7] ));
+					$("#" + key).attr('data-membership_payments_charter', 	parseFloat( window.districts[district][year][8] ));
+					$("#" + key).attr('data-membership_payments_ytd', 		parseFloat( window.districts[district][year][9] ));
+					$("#" + key).attr('data-membership_payments_base', 		parseFloat( window.districts[district][year][10] ));				
 					$("#" + key).attr('data-membership_payments_growth_percent', parseFloat( window.districts[district][year][11] ));
-					$("#" + key).attr('data-paidclub_growth_percent', parseFloat( window.districts[district][year][14] ));					
-					$("#" + key).attr('data-distinguished_clubs_percent', parseFloat( window.districts[district][year][20] ));
+					$("#" + key).attr('data-paidclub_base', 				parseFloat( window.districts[district][year][12] ));
+					$("#" + key).attr('data-paidclub_ytd', 					parseFloat( window.districts[district][year][13] ));
+					$("#" + key).attr('data-paidclub_growth_percent', 		parseFloat( window.districts[district][year][14] ));					
+					$("#" + key).attr('data-active_clubs', 					parseFloat( window.districts[district][year][15] ));
+					$("#" + key).attr('data-distinguished_clubs', 			parseFloat( window.districts[district][year][16] ));
+					$("#" + key).attr('data-distinguished_clubs_select', 	parseFloat( window.districts[district][year][17] ));
+					$("#" + key).attr('data-distinguished_clubs_president', parseFloat( window.districts[district][year][18] ));
+					$("#" + key).attr('data-distinguished_clubs_total', 	parseFloat( window.districts[district][year][19] ));
+					$("#" + key).attr('data-distinguished_clubs_percent', 	parseFloat( window.districts[district][year][20] ));
+					
+					$("#" + key).html(
+						'MP%' + $("#" + key).attr('data-membership_payments_growth_percent') + '<br>' +
+						'PCG%' + $("#" + key).attr('data-paidclub_growth_percent') + '<br>' +
+						'DC%' + $("#" + key).attr('data-distinguished_clubs_percent') + '<br>'
+					);
+
 					
 					if( 
 						($("#" + key).attr('data-dsp') == 'Y') &&
@@ -275,9 +292,8 @@
 					}
 					else
 					{
-						$("#" + key).attr('data-distinguished', 'not');
-					}
-					
+						$("#" + key).attr('data-distinguished', 'not_distinguished');
+					}					
 				}
 				
 				$( 'td').each(function(key,value) {
@@ -300,11 +316,119 @@
 					{
 						$(value).addClass('distinguished');
 					}
+					else
+					{
+						$(value).addClass('not_distinguished');
+					}
 					
 				}); //$( 'td').each(function(key,value)
 			} // for(district in window.districts)
 			
 			$( "#contentarea" ).append("</tbody>");
+
+			$( document ).uitooltip({
+				items: "td",
+				content: function(){
+					var element = $( this );
+					if(!element.attr('data-district'))
+					{
+						return;
+					}
+					
+					var content = '';
+					var w_mp = [];
+					var r_mp = [];
+					var w_pcg = [];
+					var r_pcg = [];
+					var w_dc = [];
+					var r_dc = [];
+					
+					$('td[data-year="' + element.attr('data-year') + '"]').each(function(){
+						if($(this).attr('data-membership_payments_growth_percent'))
+						{
+							w_mp.push( parseFloat($(this).attr('data-membership_payments_growth_percent')) );
+						}
+						if($(this).attr('data-paidclub_growth_percent'))
+						{
+							w_pcg.push( parseFloat($(this).attr('data-paidclub_growth_percent')) );
+						}
+						if($(this).attr('data-distinguished_clubs_percent'))
+						{
+							w_dc.push( parseFloat($(this).attr('data-distinguished_clubs_percent')) );
+						}
+					});
+					
+					$('td[data-year="' + element.attr('data-year') + '"][data-region="' + element.attr('data-region') + '"]').each(function(){
+						if($(this).attr('data-membership_payments_growth_percent'))
+						{
+							r_mp.push( parseFloat($(this).attr('data-membership_payments_growth_percent')) );
+						}
+						if($(this).attr('data-paidclub_growth_percent'))
+						{
+							r_pcg.push( parseFloat($(this).attr('data-paidclub_growth_percent')) );
+						}
+						if($(this).attr('data-distinguished_clubs_percent'))
+						{
+							r_dc.push( parseFloat($(this).attr('data-distinguished_clubs_percent')) );
+						}
+					});
+					
+					function sum(arr)
+					{
+						out = 0;
+						for(i=0; i<arr.length; i++)
+						{
+							out += arr[i];
+						}
+						return out;
+					}
+					
+					function avg(arr) { 						
+						return sum(arr) / arr.length; 
+					}
+					
+					function rank(arr,cnt)
+					{
+						var sorted = arr.slice().sort(function(a,b){return b-a});
+						var rank = sorted.indexOf(cnt,0);
+						for(i=0; i<sorted.length; i++)
+						{
+							if(cnt == sorted[i])
+							{
+								return i+1;
+							}
+						}						
+					}
+					
+					
+					
+							
+					content += '<u>District ' + element.attr('data-district') + ' - ';
+					content += 'Year ' + element.attr('data-year') + '</u><br>';
+					
+					content += 'Membership Payments ' + element.attr('data-membership_payments_growth_percent') + '%<br>';
+					content += 'world_avg=' + avg(w_mp).toFixed(2) + '%<br>';
+					content += 'world_rank=' + rank(w_mp, element.attr('data-membership_payments_growth_percent')) + '<br>';
+					content += 'region_avg=' + avg(r_mp).toFixed(2) + '%<br>';
+					content += 'region_rank=' + rank(r_mp, element.attr('data-membership_payments_growth_percent')) + '<br><br>';
+					
+					content += 'Paid Clubs Growth ' + element.attr('data-paidclub_growth_percent') + '%<br>';
+					content += 'world_avg=' + avg(w_pcg).toFixed(2) + '%<br>';
+					content += 'world_rank=' + rank(w_pcg, element.attr('data-paidclub_growth_percent')) + '<br>';
+					content += 'region_avg=' + avg(r_pcg).toFixed(2) + '%<br>';
+					content += 'region_rank=' + rank(r_pcg, element.attr('data-paidclub_growth_percent')) + '<br><br>';
+										
+					content += 'Distinguished Club ' + element.attr('data-distinguished_clubs_percent') + '%<br>';
+					content += 'world_avg=' + avg(w_dc).toFixed(2) + '%<br>';
+					content += 'world_rank=' + rank(w_dc, element.attr('data-distinguished_clubs_percent')) + '<br>';
+					content += 'region_avg=' + avg(r_dc).toFixed(2) + '%<br>';
+					content += 'region_rank=' + rank(r_dc, element.attr('data-distinguished_clubs_percent')) + '<br><br>';
+
+					
+					return content;
+					
+				}
+			});
 						
 		});		
 		
