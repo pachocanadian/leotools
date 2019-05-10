@@ -45,6 +45,11 @@
 		.distinguished {
 			background-color: #a9b2b1;
 		}
+		
+		#contentarea .REGION {
+			background-color: #d0d0d0;
+			text-align: center;
+		}
 
 		
 	</style>
@@ -408,31 +413,61 @@
 					
 					content += 'Membership Payments ' + element.attr('data-membership_payments_growth_percent') + '%<br>';
 					content += 'world_avg=' + avg(w_mp).toFixed(2) + '%<br>';
-					content += 'world_rank=' + rank(w_mp, element.attr('data-membership_payments_growth_percent')) + '<br>';
+					content += 'world_rank=' + rank(w_mp, element.attr('data-membership_payments_growth_percent')) + '/' + w_mp.length + '<br>';
 					content += 'region_avg=' + avg(r_mp).toFixed(2) + '%<br>';
-					content += 'region_rank=' + rank(r_mp, element.attr('data-membership_payments_growth_percent')) + '<br><br>';
+					content += 'region_rank=' + rank(r_mp, element.attr('data-membership_payments_growth_percent')) + '/' + r_mp.length + '<br><br>';
 					
 					content += 'Paid Clubs Growth ' + element.attr('data-paidclub_growth_percent') + '%<br>';
 					content += 'world_avg=' + avg(w_pcg).toFixed(2) + '%<br>';
-					content += 'world_rank=' + rank(w_pcg, element.attr('data-paidclub_growth_percent')) + '<br>';
+					content += 'world_rank=' + rank(w_pcg, element.attr('data-paidclub_growth_percent')) + '/' + w_pcg.length + '<br>';
 					content += 'region_avg=' + avg(r_pcg).toFixed(2) + '%<br>';
-					content += 'region_rank=' + rank(r_pcg, element.attr('data-paidclub_growth_percent')) + '<br><br>';
+					content += 'region_rank=' + rank(r_pcg, element.attr('data-paidclub_growth_percent')) + '/' + r_pcg.length + '<br><br>';
 										
 					content += 'Distinguished Club ' + element.attr('data-distinguished_clubs_percent') + '%<br>';
 					content += 'world_avg=' + avg(w_dc).toFixed(2) + '%<br>';
-					content += 'world_rank=' + rank(w_dc, element.attr('data-distinguished_clubs_percent')) + '<br>';
+					content += 'world_rank=' + rank(w_dc, element.attr('data-distinguished_clubs_percent')) + '/' + w_dc.length + '<br>';
 					content += 'region_avg=' + avg(r_dc).toFixed(2) + '%<br>';
-					content += 'region_rank=' + rank(r_dc, element.attr('data-distinguished_clubs_percent')) + '<br><br>';
+					content += 'region_rank=' + rank(r_dc, element.attr('data-distinguished_clubs_percent')) + '/' + r_dc.length + '<br><br>';
 
 					
-					return content;
-					
+					return content;					
 				}
 			});
 						
-		});		
+			var rows = $('TABLE#contentarea tbody tr').get();
+			console.log('length=' + rows.length);
+			rows.sort(function(a,b) {
+				var RA = $(a).find('td[data-year="2018-2019"]').attr('data-region');
+				var RB = $(b).find('td[data-year="2018-2019"]').attr('data-region');
+				
+				var DA = $(a).find('td[data-year="2018-2019"]').attr('data-district');
+				var DB = $(b).find('td[data-year="2018-2019"]').attr('data-district');
+				
+				if(RA < RB) { return -1; }
+				if(RA > RB) { return +1; }
+				
+				if(DA < DB) { return -1; }
+				if(DA > DB) { return +1; }
+				
+				return 0;			
+			});
+			$.each(rows, function(index, row) {
+				$('#contentarea').children('tbody').append(row);
+			});
+			
+			var last_region = '';
+			$('TABLE#contentarea tbody tr').each(function(index,row){
+				var current_region = $(row).find('td[data-year="2018-2019"]').attr('data-region');
+				if(last_region != current_region)
+				{
+					$(row).before('<tr><td colspan=12 class="REGION">REGION ' + current_region + '</td></tr>');
+					last_region = current_region;
+				}
+			});
 		
+		}); // $(document).ajaxStop(function()
 		
+
 
 
 	
