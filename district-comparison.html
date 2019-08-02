@@ -176,6 +176,7 @@
 			
 			$( "#contentarea" ).append("<thead><tr id=th_header>" + 
 					'<th class="col-xs-1">District' + '</th>' +
+					'<th class="col-xs-1" id="th_2019-2020">' + "2019-2020" + '</th>' +
 					'<th class="col-xs-1" id="th_2018-2019">' + "2018-2019" + '</th>' +
 					'<th class="col-xs-1" id="th_2017-2018">' + "2017-2018" + '</th>' +
 					'<th class="col-xs-1" id="th_2016-2017">' + "2016-2017" + '</th>' +
@@ -196,6 +197,7 @@
 			{
 				$( "#contentarea" ).append("<tr id=district_" + district + ">" + 
 					'<td class="col-xs-1">District ' + district + '</td>' +
+					'<td class="col-xs-1" id="' + (district+"_"+"2019-2020") + '">' + "" + '</td>' +
 					'<td class="col-xs-1" id="' + (district+"_"+"2018-2019") + '">' + "" + '</td>' +
 					'<td class="col-xs-1" id="' + (district+"_"+"2017-2018") + '">' + "" + '</td>' +
 					'<td class="col-xs-1" id="' + (district+"_"+"2016-2017") + '">' + "" + '</td>' +
@@ -446,11 +448,11 @@
 			var rows = $('TABLE#contentarea tbody tr').get();
 			console.log('length=' + rows.length);
 			rows.sort(function(a,b) {
-				var RA = $(a).find('td[data-year="2018-2019"]').attr('data-region');
-				var RB = $(b).find('td[data-year="2018-2019"]').attr('data-region');
+				var RA = $(a).find('td[data-year="2019-2020"]').attr('data-region');
+				var RB = $(b).find('td[data-year="2019-2020"]').attr('data-region');
 				
-				var DA = $(a).find('td[data-year="2018-2019"]').attr('data-district');
-				var DB = $(b).find('td[data-year="2018-2019"]').attr('data-district');
+				var DA = $(a).find('td[data-year="2019-2020"]').attr('data-district');
+				var DB = $(b).find('td[data-year="2019-2020"]').attr('data-district');
 				
 				if(RA < RB) { return -1; }
 				if(RA > RB) { return +1; }
@@ -466,7 +468,7 @@
 			
 			var last_region = '';
 			$('TABLE#contentarea tbody tr').each(function(index,row){
-				var current_region = $(row).find('td[data-year="2018-2019"]').attr('data-region');
+				var current_region = $(row).find('td[data-year="2019-2020"]').attr('data-region');
 				if(last_region != current_region)
 				{
 					$(row).before('<tr><td colspan=12 class="REGION">REGION ' + current_region + '</td></tr>');
