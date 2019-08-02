@@ -471,7 +471,7 @@
 				var current_region = $(row).find('td[data-year="2019-2020"]').attr('data-region');
 				if(last_region != current_region)
 				{
-					$(row).before('<tr><td colspan=12 class="REGION">REGION ' + current_region + '</td></tr>');
+					$(row).before('<tr><td colspan=13 class="REGION">REGION ' + current_region + '</td></tr>');
 					last_region = current_region;
 				}
 			});
