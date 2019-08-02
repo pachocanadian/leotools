@@ -5,7 +5,7 @@ function Leotools(args)
 	
 	this.cors_proxy = ( typeof args.cors_proxy !== 'undefined') ? args.cors_proxy : 'https://code.pachogrande.com/leotools/cors/proxy.php/';
 	this.district = ( typeof args.district !== 'undefined') ? args.district : '96';
-	this.tm_year = ( typeof args.tm_year !== 'undefined') ? args.tm_year : '2018-2019';
+	this.tm_year = ( typeof args.tm_year !== 'undefined') ? args.tm_year : '2019-2020';
 	
 	this.current_club_performance_url = function()
 		{
