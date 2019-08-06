@@ -99,7 +99,7 @@
 			"2009-2010" : "http://dashboards.toastmasters.org/2009-2010/export.aspx?type=CSV&report=districtsummary~6/30/2010~~2009-2010",
 			"2008-2009" : "http://dashboards.toastmasters.org/2008-2009/export.aspx?type=CSV&report=districtsummary~6/30/2009~~2008-2009",		
 		};
-		var years = ["2019-2020", "2018-2019", "2017-2018", "2016-2017", "2015-2016", "2014-2015", "2013-2014", "2012-2013", "2011-2012", "2010-2011", "2009-2010", "2008-2009"];
+		var years = ["2019-2020", "2018-2019", "2017-2018", "2016-2017", "2015-2016", "2014-2015", "2013-2014", "2012-2013", "2011-2012", "2010-2011", "2009-2010"];
 		window.years = years;
 
 		for(i=0; i<years.length; i++)
@@ -187,7 +187,6 @@
 					'<th class="col-xs-1" id="th_2011-2012">' + "2011-2012" + '</th>' +
 					'<th class="col-xs-1" id="th_2010-2011">' + "2010-2011" + '</th>' +
 					'<th class="col-xs-1" id="th_2009-2010">' + "2009-2010" + '</th>' +
-					'<th class="col-xs-1" id="th_2008-2009">' + "2008-2009" + '</th>' +
 					"</tr></thead>");
 			
 			$( "#contentarea" ).append("<tbody>");
@@ -208,7 +207,6 @@
 					'<td class="col-xs-1" id="' + (district+"_"+"2011-2012") + '">' + "" + '</td>' +
 					'<td class="col-xs-1" id="' + (district+"_"+"2010-2011") + '">' + "" + '</td>' +
 					'<td class="col-xs-1" id="' + (district+"_"+"2009-2010") + '">' + "" + '</td>' +
-					'<td class="col-xs-1" id="' + (district+"_"+"2008-2009") + '">' + "" + '</td>' +
 					"</tr>");
 					
 				for( year in window.districts[district])
@@ -260,9 +258,9 @@
 					$("#" + key).attr('data-distinguished_clubs_percent', 	parseFloat( window.districts[district][year][20] ));
 					
 					$("#" + key).html(
-						'MP%' + $("#" + key).attr('data-membership_payments_growth_percent') + '<br>' +
-						'PCG%' + $("#" + key).attr('data-paidclub_growth_percent') + '<br>' +
-						'DC%' + $("#" + key).attr('data-distinguished_clubs_percent') + '<br>'
+						'MP ' + $("#" + key).attr('data-membership_payments_ytd')+ ' (' + $("#" + key).attr('data-membership_payments_growth_percent') + '%)<br>' +
+						'PCG ' + $("#" + key).attr('data-paidclub_ytd') + ' (' + $("#" + key).attr('data-paidclub_growth_percent') + '%)<br>' +
+						'DC ' + $("#" + key).attr('data-distinguished_clubs_total') + ' (' + $("#" + key).attr('data-distinguished_clubs_percent')+ '%)<br>'
 					);
 
 					
