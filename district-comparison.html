@@ -86,7 +86,8 @@
 	
 		var LT = new Leotools();
 		var urls = {
-			"2019-2020"   : LT.current_district_summary_url(),
+			"2020-2021"   : LT.current_district_summary_url(),
+			"2019-2020" : "http://dashboards.toastmasters.org/2018-2019/export.aspx?type=CSV&report=districtsummary~6/30/2020~~2019-2020",
 			"2018-2019" : "http://dashboards.toastmasters.org/2018-2019/export.aspx?type=CSV&report=districtsummary~6/30/2019~~2018-2019",
 			"2017-2018" : "http://dashboards.toastmasters.org/2017-2018/export.aspx?type=CSV&report=districtsummary~6/30/2018~~2017-2018",
 			"2016-2017" : "http://dashboards.toastmasters.org/2016-2017/export.aspx?type=CSV&report=districtsummary~6/30/2017~~2016-2017",
@@ -99,7 +100,7 @@
 			"2009-2010" : "http://dashboards.toastmasters.org/2009-2010/export.aspx?type=CSV&report=districtsummary~6/30/2010~~2009-2010",
 			"2008-2009" : "http://dashboards.toastmasters.org/2008-2009/export.aspx?type=CSV&report=districtsummary~6/30/2009~~2008-2009",		
 		};
-		var years = ["2019-2020", "2018-2019", "2017-2018", "2016-2017", "2015-2016", "2014-2015", "2013-2014", "2012-2013", "2011-2012", "2010-2011", "2009-2010"];
+		var years = ["2020-2021", "2019-2020", "2018-2019", "2017-2018", "2016-2017", "2015-2016", "2014-2015", "2013-2014", "2012-2013", "2011-2012", "2010-2011", "2009-2010"];
 		window.years = years;
 
 		for(i=0; i<years.length; i++)
@@ -176,6 +177,7 @@
 			
 			$( "#contentarea" ).append("<thead><tr id=th_header>" + 
 					'<th class="col-xs-1">District' + '</th>' +
+					'<th class="col-xs-1" id="th_2020-2021">' + "2019-2020" + '</th>' +
 					'<th class="col-xs-1" id="th_2019-2020">' + "2019-2020" + '</th>' +
 					'<th class="col-xs-1" id="th_2018-2019">' + "2018-2019" + '</th>' +
 					'<th class="col-xs-1" id="th_2017-2018">' + "2017-2018" + '</th>' +
@@ -196,6 +198,7 @@
 			{
 				$( "#contentarea" ).append("<tr id=district_" + district + ">" + 
 					'<td class="col-xs-1">District ' + district + '</td>' +
+					'<td class="col-xs-1" id="' + (district+"_"+"2020-2021") + '">' + "" + '</td>' +
 					'<td class="col-xs-1" id="' + (district+"_"+"2019-2020") + '">' + "" + '</td>' +
 					'<td class="col-xs-1" id="' + (district+"_"+"2018-2019") + '">' + "" + '</td>' +
 					'<td class="col-xs-1" id="' + (district+"_"+"2017-2018") + '">' + "" + '</td>' +
@@ -446,11 +449,11 @@
 			var rows = $('TABLE#contentarea tbody tr').get();
 			console.log('length=' + rows.length);
 			rows.sort(function(a,b) {
-				var RA = $(a).find('td[data-year="2019-2020"]').attr('data-region');
-				var RB = $(b).find('td[data-year="2019-2020"]').attr('data-region');
+				var RA = $(a).find('td[data-year="2020-2021"]').attr('data-region');
+				var RB = $(b).find('td[data-year="2020-2021"]').attr('data-region');
 				
-				var DA = $(a).find('td[data-year="2019-2020"]').attr('data-district');
-				var DB = $(b).find('td[data-year="2019-2020"]').attr('data-district');
+				var DA = $(a).find('td[data-year="2020-2021"]').attr('data-district');
+				var DB = $(b).find('td[data-year="2020-2021"]').attr('data-district');
 				
 				if(RA < RB) { return -1; }
 				if(RA > RB) { return +1; }
@@ -466,7 +469,7 @@
 			
 			var last_region = '';
 			$('TABLE#contentarea tbody tr').each(function(index,row){
-				var current_region = $(row).find('td[data-year="2019-2020"]').attr('data-region');
+				var current_region = $(row).find('td[data-year="2020-2021"]').attr('data-region');
 				if(last_region != current_region)
 				{
 					$(row).before('<tr><td colspan=13 class="REGION">REGION ' + current_region + '</td></tr>');
