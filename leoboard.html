@@ -295,7 +295,7 @@
 		  	for(i=0; i<columns.length; i++)
 		  	{
 		  		baseStr = columns[i];
-		  		baseStr = baseStr.replace(/[.@#$%\^&*=_+"'\/<>\\\|{}\[\]]/g,"");
+		  		baseStr = baseStr.replace(/[,.@#$%\^&*=_+"'\/<>\\\|{}\[\]]/g,"");
 				baseStr = baseStr.replace(/[\t ]+/g,'');
         		baseStr = baseStr.replace(/\n{1,}/g,'');
         		baseStr = baseStr.toLowerCase();
@@ -996,25 +996,12 @@
 			bad = '<td style="background-color:#ff0000; border: solid black 1px; text-align: center;" width="10%">';
 	
 			t = '<table width=100%><tr>' +
-				'<td><b>Legacy:</b></td>' +
-				( e.attr('data-ccs') 				>= 2 ? good : e.attr('data-ccs') == 1 ? ok : bad ) + e.attr('data-ccs') + '</td>' +
-				( e.attr('data-addccs') 			>= 2 ? good : e.attr('data-addccs') == 1 ? ok : bad ) + e.attr('data-addccs') + '</td>' +
-				( e.attr('data-acs') 				>= 1 ? good : bad ) + e.attr('data-acs') + '</td>' +
-				( e.attr('data-addacs') 			>= 1 ? good : bad ) + e.attr('data-addacs') + '</td>' +
-				( e.attr('data-claldtms') 			>= 1 ? good : bad ) + e.attr('data-claldtms') + '</td>' +
-				( e.attr('data-addclaldtms') 		>= 1 ? good : bad ) + e.attr('data-addclaldtms') + '</td>' +
-				( e.attr('data-newmembers') 		>= 4 ? good : e.attr('data-newmembers') >= 2 ? ok : bad ) + e.attr('data-newmembers') + '</td>' +
-				( e.attr('data-addnewmembers') 		>= 4 ? good : e.attr('data-addnewmembers') >= 2 ? ok : bad ) + e.attr('data-addnewmembers') + '</td>' +
-				( e.attr('data-offtrainedround1') 	>= 4 && e.attr('data-offtrainedround2') >= 4 ? good : e.attr('data-offtrainedround1') >= 4 || e.attr('data-offtrainedround2') >= 4 ? ok : bad ) + e.attr('data-offtrainedround1') + '/' + e.attr('data-offtrainedround2') + '</td>' +
-				( e.attr('data-memduesontimeoct') 	>= 1 && e.attr('data-memduesontimeapr') >= 1 ? good : e.attr('data-memduesontimeoct') >= 1 || e.attr('data-memduesontimeapr') >= 1 ? ok : bad ) + e.attr('data-memduesontimeoct') + '/' + e.attr('data-memduesontimeapr') + '</td>' +
-				'</tr><tr>' +
-				'<td><b>Pathways:</b></td>' +
 				( e.attr('data-level1s') 			>= 4 ? good : e.attr('data-level1s') == 1 ? ok : bad ) + e.attr('data-level1s') + '</td>' +
 				( e.attr('data-level2s') 			>= 2 ? good : e.attr('data-level2s') == 1 ? ok : bad ) + e.attr('data-level2s') + '</td>' +
 				( e.attr('data-addlevel2s') 		>= 2 ? good : bad ) + e.attr('data-addlevel2s') + '</td>' +
 				( e.attr('data-level3s') 			>= 2 ? good : bad ) + e.attr('data-level3s') + '</td>' +
-				( e.attr('data-level4s') 			>= 1 ? good : bad ) + e.attr('data-level4s') + '</td>' +
-				( e.attr('data-level5s') 			>= 1 ? good : bad ) + e.attr('data-level5s') + '</td>' +
+				( e.attr('data-level4slevel5sordtmaward') 			>= 1 ? good : bad ) + e.attr('data-level4slevel5sordtmaward') + '</td>' +
+				( e.attr('data-addlevel4slevel5sordtmaward') 			>= 1 ? good : bad ) + e.attr('data-addlevel4slevel5sordtmaward') + '</td>' +
 				( e.attr('data-newmembers') 		>= 4 ? good : e.attr('data-newmembers') >= 2 ? ok : bad ) + e.attr('data-newmembers') + '</td>' +
 				( e.attr('data-addnewmembers') 		>= 4 ? good : e.attr('data-addnewmembers') >= 2 ? ok : bad ) + e.attr('data-addnewmembers') + '</td>' +
 				( e.attr('data-offtrainedround1') 	>= 4 && e.attr('data-offtrainedround2') >= 4 ? good : e.attr('data-offtrainedround1') >= 4 || e.attr('data-offtrainedround2') >= 4 ? ok : bad ) + e.attr('data-offtrainedround1') + '/' + e.attr('data-offtrainedround2') + '</td>' +
