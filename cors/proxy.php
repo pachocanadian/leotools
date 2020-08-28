@@ -9,6 +9,12 @@
 	]);
 	$InstanceCache = CacheManager::getInstance('files');
 
+	# only allow requests to dashboards.toastmasters.org
+	if(!preg_match('/(http:\/\/|https:\/\/)(dashboards.toastmasters.org)/', $_SERVER["REQUEST_URI"]))
+	{
+		exit;
+	}
+
 	$url = substr($_SERVER["REQUEST_URI"], strlen($_SERVER["SCRIPT_NAME"])+1 );	
 	
 	$key = $url;
