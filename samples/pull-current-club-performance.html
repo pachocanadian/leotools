@@ -12,7 +12,6 @@
     	<meta charset="utf-8">
     	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     	<title>samples/pull-current-club-performance.html</title>
-    	<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
 	</head>
 <body>
@@ -26,7 +25,6 @@
 	<table id="htmlblock" class="display" style="width:100%"></table>
 	
 	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 	<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 	<script src="../js/leotools-common.js"></script>
 	
@@ -65,14 +63,11 @@
 					}					
 					$('#district_select option[value=' + district + ']').attr('selected', 'selected');
 										
-					$('#district_select').selectmenu({
-						close: function(event,ui) {
-							var district = this.value;
-							LT.district = this.value;
-							$('span#district_text').text(district);
-							load_datatable();
-						}
-						
+					$('#district_select').on("change", function(){
+						var district = this.value;
+						LT.district = this.value;
+						$('span#district_text').text(district);
+						load_datatable();
 					});
 					
 				}
@@ -103,8 +98,6 @@
 				// The last two rows indicate when the information was pulled, pop them out of the way before rendering
 				jsonArray.pop();
 			  	jsonArray.pop();
-			  				  	
-
 			  	
 			  	$("#htmlblock").DataTable({
 			  		"data": jsonArray,			  		
