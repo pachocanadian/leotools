@@ -323,7 +323,7 @@
 					val[ columns[i] ] = v[i];
 				}
 				
-				val['membershiprequired'] = (parseInt(val['membase']) <= 15 ? (parseInt(val['membase']) + 5) : 20 );
+				val['membershiprequired'] = (parseInt(val['membase']) <= 17 ? (parseInt(val['membase']) + 3) : 20 );
 				val['membershipneeded'] = ( val['activemembers'] - val['membershiprequired'] );
 				val['coachingeligible'] = parseInt( val['activemembers'] >= 8 && val['activemembers'] <= 12 );
 				
