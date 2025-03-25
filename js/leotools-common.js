@@ -14,7 +14,7 @@ function Leotools(args)
 			endOfMonth = new Date(today.getFullYear(), today.getMonth()+1, 0);	
 			date_string = (endOfMonth.getMonth()+1) + '/' + endOfMonth.getDate() + '/' + endOfMonth.getFullYear();
 			
-			var report_csv_url = 'http://dashboards.toastmasters.org/export.aspx?type=CSV&report=clubperformance~' + this.district + '~' + date_string + '~~' + this.tm_year;	
+			var report_csv_url = 'https://dashboards.toastmasters.org/export.aspx?type=CSV&report=clubperformance~' + this.district + '~' + date_string + '~~' + this.tm_year;	
 			return report_csv_url;			
 		};
 	
@@ -25,7 +25,7 @@ function Leotools(args)
 			endOfMonth = new Date(today.getFullYear(), today.getMonth()+1, 0);	
 			date_string = (endOfMonth.getMonth()+1) + '/' + endOfMonth.getDate() + '/' + endOfMonth.getFullYear();
 			
-			var report_csv_url = 'http://dashboards.toastmasters.org/export.aspx?type=CSV&report=districtperformance~' + this.district + '~' + date_string + '~~' + this.tm_year;	
+			var report_csv_url = 'https://dashboards.toastmasters.org/export.aspx?type=CSV&report=districtperformance~' + this.district + '~' + date_string + '~~' + this.tm_year;	
 			return report_csv_url;			
 		};
 	
@@ -36,7 +36,7 @@ function Leotools(args)
 			endOfMonth = new Date(today.getFullYear(), today.getMonth()+1, 0);	
 			date_string = (endOfMonth.getMonth()+1) + '/' + endOfMonth.getDate() + '/' + endOfMonth.getFullYear();
 			
-			var report_csv_url = 'http://dashboards.toastmasters.org/export.aspx?type=CSV&report=divisionperformance~' + this.district + '~' + date_string + '~~' + this.tm_year;	
+			var report_csv_url = 'https://dashboards.toastmasters.org/export.aspx?type=CSV&report=divisionperformance~' + this.district + '~' + date_string + '~~' + this.tm_year;	
 			return report_csv_url;			
 		};	
 
@@ -47,7 +47,7 @@ function Leotools(args)
 		endOfMonth = new Date(today.getFullYear(), today.getMonth()+1, 0);	
 		date_string = (endOfMonth.getMonth()+1) + '/' + endOfMonth.getDate() + '/' + endOfMonth.getFullYear();
 					
-		var report_csv_url = 'http://dashboards.toastmasters.org/export.aspx?type=CSV&report=districtsummary~' + date_string + '~~' + this.tm_year;	
+		var report_csv_url = 'https://dashboards.toastmasters.org/export.aspx?type=CSV&report=districtsummary~' + date_string + '~~' + this.tm_year;	
 		return report_csv_url;
 		};
 			
