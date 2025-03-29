@@ -23,7 +23,7 @@
 	$CachedString = $InstanceCache->getItem($key);
 
 	$output = '';
-	if (is_null($CachedString->get())) {
+	if (is_null($CachedString->get()) or $CachedString->get() == false) {
 		$ch = curl_init();
 
 		// set URL and other appropriate options
@@ -31,8 +31,17 @@
 		curl_setopt($ch, CURLOPT_HEADER, 			false);
 		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 	true);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 	true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 	0);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 	false);
 		
 		$output = curl_exec($ch);
+
+		if(!$output)
+		{
+			//print_r(curl_getinfo($ch));
+			//print_r(curl_error($ch));
+		}
+
 		curl_close($ch);
 
 		$CachedString->set($output)->expiresAfter(60*60*24*7);
