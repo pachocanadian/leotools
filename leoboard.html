@@ -325,7 +325,7 @@
 
 				val['membershiprequired'] = (parseInt(val['membase']) <= 17 ? (parseInt(val['membase']) + 3) : 20 );
 				val['membershipneeded'] = ( val['activemembers'] - val['membershiprequired'] );
-				val['coachingeligible'] = parseInt( val['activemembers'] >= 8 && val['activemembers'] <= 12 );
+				val['coachingeligible'] = val['activemembers'] >= 8 && val['activemembers'] <= 12;
 				
 				val['advice'] = '';
 				if(val.goalsmet == 0)
@@ -399,18 +399,18 @@
 				val['retention'] = (parseInt(val['membase']) / (parseInt(val['membase']) + parseInt(val['newmembers']) + parseInt(val['addnewmembers'])));
 				
 				//console.log(val);
-				
+				const coachenabled = false; // Set to true to show 'Coach?' on eligible clubs
 				jq = $( "<div class='col-xs-3 col-sm-3 col-md-2 col-lg-1 club' id='club_" + val.clubnumber + "'>" +
 					"<span class=clubname>" 	+ val.clubname 		+ "</span>" +
 					"<span class=goalsmet>" 	+ val.goalsmet 	+ "</span>" +
 					"<span class=membershipneeded>" 	+ ( val.membershipneeded > 0 ? '+' : '' ) + val.membershipneeded 	+ "</span>" +
-					( val.coaching_eligible >= 1 ? '<span class=coaching_eligible>Coach?</span>' : '' ) +
+					( coachenabled && val.coachingeligible ? '<span class=coaching_eligible>Coach?</span>' : '' ) +
 					"</div>" );
-		
+
 				$.each( val, function( ekey, eval) {
 					jq.attr('data-' + ekey, eval);
 				});
-		
+
 				$("div#contentarea").append(jq);
 		
 		 	});
