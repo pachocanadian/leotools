@@ -341,25 +341,26 @@
 				const presidentdistinguished = presidentbygoals && memberspresidentneeded >= 0;
 				const smedleydistinguished = smedleybygoals && memberssmedleyneeded >= 0;
 
+				val['advice'] = '';
 				if(val.goalsmet == 0)
 				{
-					val['next'] = 'A champion could get this club rocking! ';
+					val['advice'] = 'A champion could get this club rocking! ';
 				}
 				else if(val.goalsmet == 1)
 				{
-					val['next'] = 'A plan and a champion could get this club rocking! ';
+					val['advice'] = 'A plan and a champion could get this club rocking! ';
 				}
 				else if(val.goalsmet == 2)
 				{
-					val['next'] = 'A plan and a champion could get this club rocking! ';
+					val['advice'] = 'A plan and a champion could get this club rocking! ';
 				}
 				else if(val.goalsmet == 3)
 				{
-					val['next'] = 'Two more DCP points till Distinguished Club! ';
+					val['advice'] = 'Two more DCP points till Distinguished Club! ';
 				}
 				else if(val.goalsmet == 4)
 				{
-					val['next'] = 'One more DCP point till Distinguished Club! ';
+					val['advice'] = 'One more DCP point till Distinguished Club! ';
 				}
 				else if (val.goalsmet >= 5) {
 					// Recognition messages
@@ -403,14 +404,15 @@
 						val['next'] = 'Only one more goal until Smedley Distinguished!';
 					else if (val.goalsmet == 10)
 						val['next'] = 'Flawless!';
+
+					const messages_array = [
+						val['recog'],
+						val['nextrecog'],
+						val['nextmembers'],
+						val['next'],
+					];
+					val['advice'] = messages_array.filter(Boolean).join('<br>');
 				}
-				const messages_array = [
-					val['recog'],
-					val['nextrecog'],
-					val['nextmembers'],
-					val['next'],
-				];
-				val['advice'] = messages_array.filter(Boolean).join('<br>');
 				
 				if(val['coachingeligible'])
 				{
