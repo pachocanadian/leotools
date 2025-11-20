@@ -325,8 +325,22 @@
 
 				val['membershiprequired'] = (parseInt(val['membase']) <= 17 ? (parseInt(val['membase']) + 3) : 20 );
 				val['membershipneeded'] = ( val['activemembers'] - val['membershiprequired'] );
-				val['coachingeligible'] = parseInt( val['activemembers'] >= 8 && val['activemembers'] <= 12 );
-				
+				val['coachingeligible'] = val['activemembers'] >= 8 && val['activemembers'] <= 12;
+				const membersselectrequired = parseInt(val['membase']) <= 15 ? (parseInt(val['membase']) + 5) : 20;
+				const membersselectneeded = val['activemembers'] - membersselectrequired;
+				const memberspresidentneeded = val['activemembers'] - 20;
+				const memberssmedleyneeded = val['activemembers'] - 25;
+
+				const distinguishedbygoals = val.goalsmet >= 5;
+				const selectbygoals = val.goalsmet >= 7;
+				const presidentbygoals = val.goalsmet >= 9;
+				const smedleybygoals = val.goalsmet >= 10;
+
+				const distinguished = distinguishedbygoals && val['membershipneeded'] >= 0;
+				const selectdistinguished = selectbygoals && membersselectneeded >= 0;
+				const presidentdistinguished = presidentbygoals && memberspresidentneeded >= 0;
+				const smedleydistinguished = smedleybygoals && memberssmedleyneeded >= 0;
+
 				val['advice'] = '';
 				if(val.goalsmet == 0)
 				{
@@ -348,46 +362,61 @@
 				{
 					val['advice'] = 'One more DCP point till Distinguished Club! ';
 				}
-				else if(val.goalsmet == 5)
-				{
-					val['recog'] = 'Distinguished Club! ';					
-					val['next'] = 'Only two more goals until Select Distinguished! ';
-					val['advice'] = val['recog'] + val['next'];
-				}
-				else if(val.goalsmet == 6)
-				{
-					val['recog'] = 'Distinguished Club! ';					
-					val['next'] = 'Only one more goal until Select Distinguished! ';
-					val['advice'] = val['recog'] + val['next'];
-				}
-				else if(val.goalsmet == 7)
-				{
-					val['recog'] = 'Selected Distinguished Club! ';					
-					val['next'] = 'Only two more goals until Presidents Distinguished! ';
-					val['advice'] = val['recog'] + val['next'];
-				}
-				else if(val.goalsmet == 8)
-				{
-					val['recog'] = 'Selected Distinguished Club! ';					
-					val['next'] = 'Only one more goals until Presidents Distinguished! ';
-					val['advice'] = val['recog'] + val['next'];
-				}
-				else if(val.goalsmet == 9)
-				{
-					val['recog'] = 'Presidents Distinguished Club! ';					
-					val['next'] = 'Only one more goals until a perfect 10/10! ';
-					val['advice'] = val['recog'] + val['next'];
-				}
-				else if(val.goalsmet == 10)
-				{
-					val['recog'] = 'Presidents Distinguished Club! ';					
-					val['next'] = 'Flawless! ';
-					val['advice'] = val['recog'] + val['next'];
+				else if (val.goalsmet >= 5) {
+					// Recognition messages
+					if (smedleydistinguished)
+						val['recog'] = 'On track for Smedley Distinguished!';
+					else if (presidentdistinguished)
+						val['recog'] = 'On track for President\'s Distinguished! ';
+					else if (selectdistinguished)
+						val['recog'] = 'On track for Select Distinguished! ';
+					else if (distinguished)
+						val['recog'] = 'On track for Distinguished Club! ';
+
+					// Next recognition messages
+					if (!smedleydistinguished && smedleybygoals) {
+						val['nextrecog'] = 'You\'ve got the goals for Smedley Distinguished!';
+						val['nextmembers'] = 'Get to 25 members in order to achieve it.';
+					}
+					else if (!presidentdistinguished && presidentbygoals) {
+						val['nextrecog'] = 'You\'ve got the goals for President\'s Distinguished!';
+						val['nextmembers'] = 'Get to 20 members in order to achieve it.';
+					}
+					else if (!selectdistinguished && selectbygoals) {
+						val['nextrecog'] = 'You\'ve got the goals for Select Distinguished!';
+						val['nextmembers'] = 'Get more members in order to achieve it.';
+					}
+					else if (!distinguished && distinguishedbygoals) {
+						val['nextrecog'] = 'You\'ve got the goals for Distinguished Club!';
+						val['nextmembers'] = 'Get more members in order to achieve it.';
+					}
+
+					// Next goal messages
+					if (val.goalsmet == 5)
+						val['next'] = 'Only two more goals until Select Distinguished!';
+					else if (val.goalsmet == 6)
+						val['next'] = 'Only one more goal until Select Distinguished!';
+					else if (val.goalsmet == 7)
+						val['next'] = 'Only two more goals until President\'s Distinguished!';
+					else if (val.goalsmet == 8)
+						val['next'] = 'Only one more goal until President\'s Distinguished!';
+					else if (val.goalsmet == 9)
+						val['next'] = 'Only one more goal until Smedley Distinguished!';
+					else if (val.goalsmet == 10)
+						val['next'] = 'Flawless!';
+
+					const messages_array = [
+						val['recog'],
+						val['nextrecog'],
+						val['nextmembers'],
+						val['next'],
+					];
+					val['advice'] = messages_array.filter(Boolean).join('<br>');
 				}
 				
 				if(val['coachingeligible'])
 				{
-					val['advice'] += 'Did you know you qualify for a club coach? ';					
+					val['advice'] += '<br>Did you know you qualify for a club coach? ';
 				}
 				
 				if(val['clubstatus'] == 'Suspended')
@@ -399,18 +428,18 @@
 				val['retention'] = (parseInt(val['membase']) / (parseInt(val['membase']) + parseInt(val['newmembers']) + parseInt(val['addnewmembers'])));
 				
 				//console.log(val);
-				
+				const coachenabled = false; // Set to true to show 'Coach?' on eligible clubs
 				jq = $( "<div class='col-xs-3 col-sm-3 col-md-2 col-lg-1 club' id='club_" + val.clubnumber + "'>" +
 					"<span class=clubname>" 	+ val.clubname 		+ "</span>" +
 					"<span class=goalsmet>" 	+ val.goalsmet 	+ "</span>" +
 					"<span class=membershipneeded>" 	+ ( val.membershipneeded > 0 ? '+' : '' ) + val.membershipneeded 	+ "</span>" +
-					( val.coaching_eligible >= 1 ? '<span class=coaching_eligible>Coach?</span>' : '' ) +
+					( coachenabled && val.coachingeligible ? '<span class=coaching_eligible>Coach?</span>' : '' ) +
 					"</div>" );
-		
+
 				$.each( val, function( ekey, eval) {
 					jq.attr('data-' + ekey, eval);
 				});
-		
+
 				$("div#contentarea").append(jq);
 		
 		 	});
