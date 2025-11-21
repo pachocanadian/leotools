@@ -1024,6 +1024,9 @@
 			ok = '<td style="background-color:#ffff00; border: solid black 1px; text-align: center;" width="10%">';
 			bad = '<td style="background-color:#ff0000; border: solid black 1px; text-align: center;" width="10%">';
 	
+			goal10_part1 = parseInt(e.attr('data-memduesontimeoct')) + parseInt(e.attr('data-memduesontimeapr'));
+			goal10_part2 = parseInt(e.attr('data-offlistontime'));
+
 			t = '<table width=100%><tr>' +
 				( e.attr('data-level1s') 			>= 4 ? good : e.attr('data-level1s') == 1 ? ok : bad ) + e.attr('data-level1s') + '</td>' +
 				( e.attr('data-level2s') 			>= 2 ? good : e.attr('data-level2s') == 1 ? ok : bad ) + e.attr('data-level2s') + '</td>' +
@@ -1034,7 +1037,7 @@
 				( e.attr('data-newmembers') 		>= 4 ? good : e.attr('data-newmembers') >= 2 ? ok : bad ) + e.attr('data-newmembers') + '</td>' +
 				( e.attr('data-addnewmembers') 		>= 4 ? good : e.attr('data-addnewmembers') >= 2 ? ok : bad ) + e.attr('data-addnewmembers') + '</td>' +
 				( e.attr('data-offtrainedround1') 	>= 4 && e.attr('data-offtrainedround2') >= 4 ? good : e.attr('data-offtrainedround1') >= 4 || e.attr('data-offtrainedround2') >= 4 ? ok : bad ) + e.attr('data-offtrainedround1') + '/' + e.attr('data-offtrainedround2') + '</td>' +
-				( e.attr('data-memduesontimeoct') 	>= 1 && e.attr('data-memduesontimeapr') >= 1 ? good : e.attr('data-memduesontimeoct') >= 1 || e.attr('data-memduesontimeapr') >= 1 ? ok : bad ) + e.attr('data-memduesontimeoct') + '/' + e.attr('data-memduesontimeapr') + '</td>' +
+				( goal10_part1 >= 1 && goal10_part2 >= 1 ? good : goal10_part1 >= 1 || goal10_part2 >= 1 ? ok : bad ) + goal10_part1 + '/' + goal10_part2 + '</td>' +
 				'</tr></table>';
 	
 			out += t;
